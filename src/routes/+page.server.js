@@ -6,7 +6,7 @@ export async function load() {
 
 	try {
 		let result = await mysqlConnection
-			.query('select * from money;')
+			.query('select distinct day_id from money;')
 			.then(function ([rows, fields]) {
 				return rows;
 			});
