@@ -17,8 +17,12 @@ export async function POST({ request }) {
 	await mysqlConnection.beginTransaction();
 	let existDay = await mysqlConnection.query(SEE_IF_THERE_DAY, [today]);
 	console.log(existDay);
+	console.log(existDay[0]);
+	const first_element = existDay[0];
+	const count_object = first_element[0];
+	const count_value = count_object['count(day_id)'];
 
-	if (existDay.length === 0) {
+	if (count_value == 0) {
 		await mysqlConnection.query(INSERT_DAY, [today]);
 	}
 
