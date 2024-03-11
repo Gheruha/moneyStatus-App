@@ -13,7 +13,7 @@
 
 	onMount(() => {
 		updateDate();
-		const intervalId = setInterval(updateDate, 60000); // Update every second
+		const intervalId = setInterval(updateDate, 120000); // update every 2 minutes
 
 		// Optionally, clear the interval on component unmount
 		return () => clearInterval(intervalId);

@@ -39,7 +39,15 @@
 
 <p>Today is: {today}</p>
 {#each data.data as moneyDayInfo}
-	<button on:click={() => getMoneyDayInfo(moneyDayInfo.day_id)}>{moneyDayInfo.day_id}</button>
+	<button on:click={() => getMoneyDayInfo(moneyDayInfo.day_id)}>
+		{new Date(moneyDayInfo.day_id)
+			.toLocaleDateString('zh-Hans-CN', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit'
+			})
+			.replace(/\//g, '-')}
+	</button>
 {/each}
 {#if moneyDayInfo}
 	{#each result as result}
