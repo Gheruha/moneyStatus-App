@@ -1,6 +1,7 @@
 <script>
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import { formatDay } from '$lib/components/formattingDay.js';
 	import icon from '$lib/images/moneyStatus.png';
 
 	let addInfo = false;
@@ -21,11 +22,7 @@
 
 	function updateDate() {
 		const date = new Date();
-		const day = String(date.getDate()).padStart(2, '0');
-		const month = String(date.getMonth() + 1).padStart(2, '0'); // Adjusted for correct month (0-indexed)
-		const year = String(date.getFullYear());
-
-		today = `${year}-${month}-${day}`;
+		today = formatDay(date);
 	}
 
 	async function addInfoOfDay(income, expense, today, category) {
