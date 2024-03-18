@@ -7,18 +7,18 @@ export async function load() {
 	let mysqlConnection = await mysqlConnectionFn();
 	// object & mysql
 	try {
-		// await mysqlConnection
-		// 	.query('select income , expense from money where day_id = ')
-		// 	.then(function ([rows]) {
-		// 		for (let i = 0; i < rows.length; i++) {
-		// 			const days = rows[i];
-		// 			const formatted_days = formatDay(days['day_id']);
-		// 			connection_object.push(formatted_days);
-		// 			connection_object = connection_object;
-		// 		}
-		// 		console.log(connection_object);
-		// 		return rows;
-		// 	});
+		await mysqlConnection
+			.query('select distinct day_id from money;')
+			.then(function ([rows, fields]) {
+				for (let i = 0; i < rows.length; i++) {
+					const days = rows[i];
+					const formatted_days = formatDay(days['day_id']);
+					connection_object.push(formatted_days);
+					connection_object = connection_object;
+				}
+				console.log(connection_object);
+				return rows;
+			});
 
 		return {
 			data: connection_object

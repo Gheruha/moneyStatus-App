@@ -34,33 +34,19 @@
 		const year = String(date.getFullYear());
 
 		today = `${year}-${month}-${day}`;
-		getMoneyDayInfo(today);
 	}
 </script>
 
-<div class="w-full h-full">
-	<h1 class="text-3xl">This is daily</h1>
-	<p class = "text-blue-500">Today is: {today}</p>
-
-	{#if moneyDayInfo}
-		<div class="pt-24 pl-20 pr-20 space-y-6">
-			{#each result as result}
-				{#if result.income != null}
-					<div
-						class="p-4 border bg-gray-100 rounded-lg shadow-lg hover:border-blue-400 hover:scale-105 transition-all duration-300"
-					>
-						<p><strong>Income: </strong>{result.income}</p>
-					</div>
-				{/if}
-
-				{#if result.expense != null}
-					<div
-						class="p-4 border bg-gray-100 rounded-lg shadow-lg hover:border-blue-400 hover:scale-105 transition-all duration-300"
-					>
-						<p><strong>Expense: </strong>{result.expense}</p>
-					</div>
-				{/if}
-			{/each}
-		</div>
-	{/if}
-</div>
+<h1 class = "text-4xl">This is calendar</h1>
+<p>Today is: {today}</p>
+{#each data.data as moneyDayInfo}
+	<button on:click={() => getMoneyDayInfo(moneyDayInfo)}>
+		{moneyDayInfo}
+	</button>
+{/each}
+{#if moneyDayInfo}
+	{#each result as result}
+		<p>{result.income}</p>
+		<p>{result.expense}</p>
+	{/each}
+{/if}
