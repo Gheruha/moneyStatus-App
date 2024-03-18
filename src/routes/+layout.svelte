@@ -34,6 +34,7 @@
 				'content-type': 'application/json'
 			}
 		});
+		location.reload();
 	}
 </script>
 
@@ -99,6 +100,7 @@
 								<input type="text" bind:value={today} />
 							</label>
 							<p>{today}</p>
+
 							<button on:click={() => addInfoOfDay(income, expense, today, category)}> ADD </button>
 						</form>
 					</div>

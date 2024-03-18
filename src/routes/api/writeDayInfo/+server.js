@@ -11,13 +11,13 @@ const SEE_IF_THERE_DAY = 'select count(day_id) from days where day_id = ?';
 const INSERT_DAY = 'insert into days(day_id) values(?)';
 
 export async function POST({ request }) {
+	// Necessary stuff for commiting the query
 	const { income, expense, today, category } = await request.json();
-
 	let mysqlConnection = await mysqlConnectionFn();
 	await mysqlConnection.beginTransaction();
+
+	// Necessary stuff to see if there is a day_id in the days table
 	let existDay = await mysqlConnection.query(SEE_IF_THERE_DAY, [today]);
-	console.log(existDay);
-	console.log(existDay[0]);
 	const first_element = existDay[0];
 	const count_object = first_element[0];
 	const count_value = count_object['count(day_id)'];
@@ -26,6 +26,7 @@ export async function POST({ request }) {
 		await mysqlConnection.query(INSERT_DAY, [today]);
 	}
 
+	// Executing the query
 	let results = await mysqlConnection.query(INSERT_MONEY, [
 		generateId(),
 		income,

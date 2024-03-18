@@ -3,17 +3,18 @@ import { mysqlConnectionFn } from '$lib/database/mysql';
 import { formatDay } from '$lib/components/formattingDay.js';
 
 export async function load() {
+	let connection_object = [];
 	let mysqlConnection = await mysqlConnectionFn();
 	// object & mysql
-	let connection_object = [];
 	try {
-		let result = await mysqlConnection
+		await mysqlConnection
 			.query('select distinct day_id from money;')
 			.then(function ([rows, fields]) {
 				for (let i = 0; i < rows.length; i++) {
 					const days = rows[i];
 					const formatted_days = formatDay(days['day_id']);
 					connection_object.push(formatted_days);
+					connection_object = connection_object;
 				}
 				console.log(connection_object);
 				return rows;
