@@ -1,8 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
-	export let data;
-	let result;
-	let moneyDayInfo = '';
+
+	// export let data;
+	let result, totalOfMonth, moneyDayInfo, today;
 
 	async function getMoneyDayInfo(day) {
 		const response = await fetch('/api/getDayInfo', {
@@ -15,9 +15,21 @@
 
 		result = await response.json();
 		moneyDayInfo = result;
+		getMonthTotalInfo(day);
 	}
 
-	let today = '';
+	async function getMonthTotalInfo(day) {
+		const response = await fetch('/api/getTotalOfMonth', {
+			method: 'POST',
+			body: JSON.stringify({ day }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		result = await response.json();
+		totalOfMonth = result;
+	}
 
 	onMount(() => {
 		updateDate();
@@ -34,30 +46,56 @@
 		const year = String(date.getFullYear());
 
 		today = `${year}-${month}-${day}`;
-		getMoneyDayInfo(today);
 	}
 </script>
 
 <div class="w-full h-full">
-	<h1 class="text-3xl">This is daily</h1>
-	<p class = "text-blue-500">Today is: {today}</p>
+	<h1 class="text-3xl">Daily</h1>
+	<button on:click={() => getMoneyDayInfo(today)}>Click to run the getMoneyDayInfo function</button>
 
+	{#if totalOfMonth}
+		{#each result as result}
+			<div class="border-b flex justify-between pr-12 pl-12">
+				<div class="text-center">
+					<p class="font-semibold">Income</p>
+					<p class="text-blue-500">$ {result.total_income}</p>
+				</div>
+				<div class="text-center">
+					<p class="font-semibold">Expense</p>
+					<p class="text-red-500">$ {result.total}</p>
+				</div>
+				<div class="text-center">
+					<p class="font-semibold">Total</p>
+					<p class="font-semibold">$ {result.total_income}</p>
+				</div>
+			</div>
+		{/each}
+	{/if}
 	{#if moneyDayInfo}
-		<div class="pt-24 pl-20 pr-20 space-y-6">
-			{#each result as result}
-				{#if result.income != null}
-					<div
-						class="p-4 border bg-gray-100 rounded-lg shadow-lg hover:border-blue-400 hover:scale-105 transition-all duration-300"
-					>
-						<p><strong>Income: </strong>{result.income}</p>
-					</div>
-				{/if}
+		<div class="pt-24 pl-20 pr-20 space-y-16">
+			{#each moneyDayInfo as groupedData}
+				{#if groupedData.day_id != null}
+					<div class="space-y-4 rounded-lg pb-16 pr-8 pl-8 bg-slate-50 shadow-lg">
+						<h2 class="text-2xl pt-4 font-semibold">{groupedData.day_id}</h2>
+						{#each groupedData.data as entry}
+							{#if entry.income != null}
+								<div
+									class="p-4 flex justify-between hover:scale-105 transition-all duration-300 border-b border-slate-300"
+								>
+									<p class="text-blue-500 font-semibold">{entry.category}</p>
+									<p class="text-blue-500">$ {entry.income}</p>
+								</div>
+							{/if}
 
-				{#if result.expense != null}
-					<div
-						class="p-4 border bg-gray-100 rounded-lg shadow-lg hover:border-blue-400 hover:scale-105 transition-all duration-300"
-					>
-						<p><strong>Expense: </strong>{result.expense}</p>
+							{#if entry.expense != null}
+								<div
+									class="p-4 flex justify-between hover:scale-105 transition-all duration-300 border-b border-slate-300"
+								>
+									<p class="text-red-500 font-semibold">{entry.category}</p>
+									<p class="text-red-500">$ {entry.expense}</p>
+								</div>
+							{/if}
+						{/each}
 					</div>
 				{/if}
 			{/each}

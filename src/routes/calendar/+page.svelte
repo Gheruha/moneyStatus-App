@@ -37,7 +37,7 @@
 	}
 </script>
 
-<h1 class = "text-4xl">This is calendar</h1>
+<h1 class="text-4xl">This is calendar</h1>
 <p>Today is: {today}</p>
 {#each data.data as moneyDayInfo}
 	<button on:click={() => getMoneyDayInfo(moneyDayInfo)}>

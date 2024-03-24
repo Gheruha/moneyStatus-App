@@ -41,7 +41,7 @@
 <!-- Main Div -->
 <div class="w-full h-full flex">
 	<!-- Menu -->
-	<div class="w-1/5 h-full fixed bg-gray-100 flex flex-col justify-start items-center">
+	<div class="w-1/5 h-full fixed bg-slate-100 flex flex-col justify-start items-center">
 		<div class="w-full flex flex-col space-y-2 mt-6 pt-8">
 			<button
 				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
