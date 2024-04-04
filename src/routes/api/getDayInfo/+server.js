@@ -8,7 +8,7 @@ export async function POST({ request }) {
 	const month = day.substring(5, 7);
 	let mysqlConnection = await mysqlConnectionFn();
 	let results = await mysqlConnection
-		.query('select * from money where month(day_id) = ' + month)
+		.query('select * from money where month(day_id) = ' + month + ' order by day_id desc')
 		.then(function ([rows, fields]) {
 			const grouped_results = new Map();
 
@@ -26,6 +26,6 @@ export async function POST({ request }) {
 
 			return serialized_data;
 		});
-	console.log(json(results));
+
 	return json(results);
 }

@@ -2,7 +2,6 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { formatDay } from '$lib/components/formattingDay.js';
-	import icon from '$lib/images/moneyStatus.png';
 
 	let addInfo = false;
 	let income, expense, category;
