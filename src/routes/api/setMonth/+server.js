@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { mysqlConnectionFn } from '$lib/database/mysql.js';
 
-const INSERT_DATE = 'insert into selectedDate values (?)';
+const INSERT_DATE = 'insert into selectedDate(selected_date) values (?)';
 
 export async function POST({ request }) {
 	const date = await request.json();

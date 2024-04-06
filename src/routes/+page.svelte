@@ -1,4 +1,5 @@
 <script>
+	import { formatDay } from '$lib/components/formattingDay.js';
 	export let data;
 	export let total_data;
 
@@ -11,10 +12,13 @@
 				'content-type': 'application/json'
 			}
 		});
+		location.reload();
 	}
-	let date = '2024-05-20';
+
+	let date = '2024-01-01'; // Initial date
 </script>
 
+<input type="text" bind:value={date} />
 <button on:click={() => addDate(date)}>Click</button>
 {#each data.total_data as total_money}
 	<div class="border-b flex justify-between pr-12 pl-12">
@@ -32,6 +36,7 @@
 		</div>
 	</div>
 {/each}
+
 <div class="flex flex-col justify-center space-y-8 pt-24 pr-20 pl-20">
 	{#each data.data as [day, entries]}
 		<div class="space-y-4 rounded-lg border pb-16 pr-8 pl-8 bg-slate-50 shadow-lg">
