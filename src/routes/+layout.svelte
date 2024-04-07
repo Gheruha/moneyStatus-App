@@ -1,5 +1,6 @@
 <script>
 	import '../app.css';
+	import ThemeSwitch from '$lib/themeSwitch/themeSwitch.svelte';
 	import { onMount } from 'svelte';
 	import { formatDay } from '$lib/components/formattingDay.js';
 
@@ -44,7 +45,9 @@
 <!-- Main Div -->
 <div class="w-full h-full flex">
 	<!-- Menu -->
-	<div class="w-1/5 h-full fixed bg-slate-100 flex flex-col justify-start items-center">
+	<div
+		class="menu w-1/5 h-full fixed bg-slate-100 flex flex-col justify-between items-center dark:bg-zinc-800"
+	>
 		<div class="w-full flex flex-col space-y-2 mt-6 pt-8">
 			<button
 				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
@@ -63,6 +66,13 @@
 				><p>Statistics</p></button
 			>
 		</div>
+
+		<div class = "flex"> 
+			<p class = "text-slate-400 dark:text-zinc-600">Theme Switch</p>
+			<div class="pb-12 text-center flex opacity-0 hover:opacity-100 transition-opacity duration-300">
+				<ThemeSwitch />
+			</div>
+		</div>
 	</div>
 
 	<!-- Content -->
@@ -70,7 +80,7 @@
 		<div class="fixed bottom-16 right-16">
 			<button
 				on:click={() => addInfoDiv()}
-				class="p-5 border rounded-full text-5xl w-24 h-24 text-center bg-blue-400 text-white transition-all hover:scale-110 duration-300"
+				class="p-5 border rounded-full text-5xl w-24 h-24 text-center bg-blue-400 border-blue-400 text-white transition-all hover:scale-110 duration-300"
 			>
 				+
 			</button>

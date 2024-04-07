@@ -3,6 +3,19 @@
 @tailwind utilities;
 
 
-.color-icon {
-    color: white;
+body {
+    transition:
+        background-color 0.2s ease-in-out,
+        color 0.2s ease-in-out;
+    @apply bg-white dark:bg-zinc-900 text-black dark:text-white text-center;
+}
+
+.menu {
+    transition:
+        background-color 0.2s ease-in-out,
+        color 0.2s ease-in-out;
+}
+
+.themeTog{
+    opacity: 0;
 }
