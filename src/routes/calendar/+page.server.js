@@ -12,12 +12,10 @@ export async function load() {
 			.then(function ([rows, fields]) {
 				for (let i = 0; i < rows.length; i++) {
 					const days = rows[i];
-					console.log(rows[i]);
 					const formatted_days = formatDay(days['day_id']);
 					connection_object.push(formatted_days);
 					connection_object = connection_object;
 				}
-				console.log(connection_object);
 				return rows;
 			});
 

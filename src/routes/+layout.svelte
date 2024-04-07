@@ -37,6 +37,10 @@
 	}
 </script>
 
+<link
+	rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+/>
 <!-- Main Div -->
 <div class="w-full h-full flex">
 	<!-- Menu -->
@@ -72,7 +76,7 @@
 			</button>
 		</div>
 
-		<div class="pt-24 w-full flex">
+		<div class="pt-16 w-full flex">
 			{#if addInfo}
 				<div class="flex flex-col fixed border w-3/5 pt-96 justify-center">
 					<div class="flex flex-col justify-center align-middle">
