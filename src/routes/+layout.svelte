@@ -5,11 +5,16 @@
 	import { formatDay } from '$lib/components/formattingDay.js';
 
 	let addInfo = false;
+	let addInfoExp = false;
 	let income, expense, category;
 	let today = '';
 
 	function addInfoDiv() {
 		addInfo = !addInfo;
+	}
+
+	function addInfoExpense() {
+		addInfoExp = !addInfoExp;
 	}
 
 	onMount(() => {
@@ -25,9 +30,21 @@
 		today = formatDay(date);
 	}
 
-	async function addInfoOfDay(income, expense, today, category) {
-		const data = JSON.stringify({ income, expense, today, category });
-		const response = await fetch('api/writeDayInfo', {
+	async function addInfoOfDay(income, today, category) {
+		const data = JSON.stringify({ income, today, category });
+		await fetch('api/writeDayInfo', {
+			method: 'POST',
+			body: data,
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+		location.reload();
+	}
+
+	async function addInfoOfDayExpense(expense, today, category) {
+		const data = JSON.stringify({ expense, today, category });
+		await fetch('api/writeDayInfoExpense', {
 			method: 'POST',
 			body: data,
 			headers: {
@@ -67,54 +84,142 @@
 			>
 		</div>
 
-		<div class = "flex"> 
-			<p class = "text-slate-400 dark:text-zinc-600">Theme Switch</p>
-			<div class="pb-12 text-center flex opacity-0 hover:opacity-100 transition-opacity duration-300">
+		<div class="flex">
+			<p class="text-slate-400 dark:text-zinc-600">Theme Switch</p>
+			<div
+				class="pb-12 text-center flex opacity-0 hover:opacity-100 transition-opacity duration-300"
+			>
 				<ThemeSwitch />
 			</div>
 		</div>
 	</div>
-
+	{#if addInfo}
+		<div
+			class="flex fixed w-full h-full justify-center items-center"
+			style="background-color: rgba(0,0,0,0.5);"
+		>
+			<div
+				class="flex flex-col justify-center align-middle w-1/4 h-2/4 border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800"
+			>
+				<div>
+					<h2 class="text-2xl font-semibold pb-6">NEW INCOME</h2>
+				</div>
+				<form action="" class="flex flex-col">
+					<label for="" class="text-slate-500 text-md dark:text-zinc-300">
+						Income $: <br />
+						<input
+							type="number"
+							class="bg-slate-100 text-zinc-800 p-2 w-4/5 border border-slate-700 dark:border-zinc-600 dark:text-slate-100 rounded-lg dark:bg-zinc-800"
+							bind:value={income}
+						/>
+					</label><br />
+					<label for="" class="text-slate-500 text-md dark:text-zinc-300">
+						Category: <br />
+						<input
+							type="text"
+							class="bg-slate-100 text-zinc-800 p-2 w-4/5 border border-slate-700 rounded-lg dark:border-zinc-600 dark:text-slate-100 dark:bg-zinc-800"
+							bind:value={category}
+						/>
+					</label><br />
+					<label for="" class="text-slate-500 text-md dark:text-zinc-300">
+						Date: <br />
+						<input
+							type="date"
+							class="bg-slate-100 text-zinc-800 p-2 w-4/5 border border-slate-700 rounded-lg dark:border-zinc-600 dark:text-slate-100 dark:bg-zinc-800"
+							bind:value={today}
+						/>
+					</label><br />
+				</form>
+				<div class="items-center flex justify-center space-x-4">
+					<button
+						on:click={() => addInfoDiv()}
+						class="w-1/5 border rounded-lg border-blue-500 text-blue-600 hover:text-blue-600 hover:bg-blue-300 transition-all hover:scale-110 duration-300"
+					>
+						CLOSE
+					</button>
+					<button
+						on:click={() => addInfoOfDay(income, today, category)}
+						class="w-1/5 border rounded-lg border-blue-500 bg-blue-500 text-white hover:bg-blue-400 transition-all hover:scale-110 duration-300"
+					>
+						ADD
+					</button>
+				</div>
+			</div>
+		</div>
+	{/if}
+	{#if addInfoExp}
+		<div
+			class="flex fixed w-full h-full justify-center items-center"
+			style="background-color: rgba(0,0,0,0.5);"
+		>
+			<div
+				class="flex flex-col justify-center align-middle w-1/4 h-2/4 border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800"
+			>
+				<div>
+					<h2 class="text-2xl font-semibold pb-6">NEW EXPENSE</h2>
+				</div>
+				<form action="" class="flex flex-col">
+					<label for="" class="text-slate-500 text-md dark:text-zinc-300">
+						Expense $: <br />
+						<input
+							type="number"
+							class="bg-slate-100 text-zinc-800 p-2 w-4/5 border border-slate-700 dark:border-zinc-600 dark:text-slate-100 rounded-lg dark:bg-zinc-800"
+							bind:value={expense}
+						/>
+					</label><br />
+					<label for="" class="text-slate-500 text-md dark:text-zinc-300">
+						Category: <br />
+						<input
+							type="text"
+							class="bg-slate-100 text-zinc-800 p-2 w-4/5 border border-slate-700 rounded-lg dark:border-zinc-600 dark:text-slate-100 dark:bg-zinc-800"
+							bind:value={category}
+						/>
+					</label><br />
+					<label for="" class="text-slate-500 text-md dark:text-zinc-300">
+						Date: <br />
+						<input
+							type="date"
+							class="bg-slate-100 text-zinc-800 p-2 w-4/5 border border-slate-700 rounded-lg dark:border-zinc-600 dark:text-slate-100 dark:bg-zinc-800"
+							bind:value={today}
+						/>
+					</label><br />
+				</form>
+				<div class="items-center flex justify-center space-x-4">
+					<button
+						on:click={() => addInfoExpense()}
+						class="w-1/5 border rounded-lg border-red-500 text-red-600 hover:text-red-600 hover:bg-red-300 transition-all hover:scale-110 duration-300"
+					>
+						CLOSE
+					</button>
+					<button
+						on:click={() => addInfoOfDayExpense(expense, today, category)}
+						class="w-1/5 border rounded-lg border-red-500 bg-red-500 text-white hover:bg-red-400 transition-all hover:scale-110 duration-300"
+					>
+						ADD
+					</button>
+				</div>
+			</div>
+		</div>
+	{/if}
 	<!-- Content -->
-	<div class="w-4/5 h-full ml-auto flex flex-col pl-36 pr-36 pb-36">
-		<div class="fixed bottom-16 right-16">
+	<div class="w-4/5 h-full ml-auto flex flex-col pl-36 pr-36 pb-36 pt-16">
+		<div class="fixed bottom-12 right-10">
+			<button
+				on:click={() => addInfoExpense()}
+				class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-red-500 border-red-500 text-white transition-all hover:scale-110 hover:bg-red-400 duration-300"
+			>
+				-
+			</button>
+		</div>
+		<div class="fixed bottom-32 right-10">
 			<button
 				on:click={() => addInfoDiv()}
-				class="p-5 border rounded-full text-5xl w-24 h-24 text-center bg-blue-400 border-blue-400 text-white transition-all hover:scale-110 duration-300"
+				class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-blue-500 border-blue-500 text-white transition-all hover:scale-110 hover:bg-blue-400 duration-300"
 			>
 				+
 			</button>
 		</div>
 
-		<div class="pt-16 w-full flex">
-			{#if addInfo}
-				<div class="flex flex-col fixed border w-3/5 pt-96 justify-center">
-					<div class="flex flex-col justify-center align-middle">
-						<form action="">
-							<label for="">
-								Income
-								<input type="text" bind:value={income} />
-							</label>
-							<label for="">
-								Expense
-								<input type="text" bind:value={expense} />
-							</label>
-							<label for="">
-								category
-								<input type="text" bind:value={category} />
-							</label>
-							<label for="">
-								date
-								<input type="text" bind:value={today} />
-							</label>
-							<p>{today}</p>
-
-							<button on:click={() => addInfoOfDay(income, expense, today, category)}> ADD </button>
-						</form>
-					</div>
-				</div>
-			{/if}
-		</div>
 		<slot />
 	</div>
 </div>
