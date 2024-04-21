@@ -3,6 +3,9 @@
 	import ThemeSwitch from '$lib/themeSwitch/themeSwitch.svelte';
 	import { onMount } from 'svelte';
 	import { formatDay } from '$lib/components/formattingDay.js';
+	import { fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
+	import { backOut } from 'svelte/easing';
 
 	let addInfo = false;
 	let addInfoExp = false;
@@ -93,13 +96,22 @@
 			</div>
 		</div>
 	</div>
+
 	{#if addInfo}
 		<div
 			class="flex fixed w-full h-full justify-center items-center"
 			style="background-color: rgba(0,0,0,0.5);"
+			transition:fade
 		>
 			<div
 				class="flex flex-col justify-center align-middle w-1/4 h-2/4 border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800"
+				in:fly={{
+					y: 100,
+					easing: backOut
+				}}
+				out:fly={{
+					y: 300
+				}}
 			>
 				<div>
 					<h2 class="text-2xl font-semibold pb-6">NEW INCOME</h2>
@@ -151,9 +163,17 @@
 		<div
 			class="flex fixed w-full h-full justify-center items-center"
 			style="background-color: rgba(0,0,0,0.5);"
+			transition:fade
 		>
 			<div
 				class="flex flex-col justify-center align-middle w-1/4 h-2/4 border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800"
+				in:fly={{
+					y: 100,
+					easing: backOut
+				}}
+				out:fly={{
+					y: 300
+				}}
 			>
 				<div>
 					<h2 class="text-2xl font-semibold pb-6">NEW EXPENSE</h2>
@@ -201,25 +221,24 @@
 			</div>
 		</div>
 	{/if}
-	<!-- Content -->
-	<div class="w-4/5 h-full ml-auto flex flex-col pl-36 pr-36 pb-36 pt-16">
-		<div class="fixed bottom-12 right-10">
-			<button
-				on:click={() => addInfoExpense()}
-				class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-red-500 border-red-500 text-white transition-all hover:scale-110 hover:bg-red-400 duration-300"
-			>
-				-
-			</button>
-		</div>
-		<div class="fixed bottom-32 right-10">
-			<button
-				on:click={() => addInfoDiv()}
-				class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-blue-500 border-blue-500 text-white transition-all hover:scale-110 hover:bg-blue-400 duration-300"
-			>
-				+
-			</button>
-		</div>
 
-		<slot />
+	<!-- Content -->
+
+	<slot />
+	<div class="fixed bottom-12 right-10">
+		<button
+			on:click={() => addInfoExpense()}
+			class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-red-500 border-red-500 text-white transition-all hover:scale-110 hover:bg-red-400 duration-300"
+		>
+			-
+		</button>
+	</div>
+	<div class="fixed bottom-32 right-10">
+		<button
+			on:click={() => addInfoDiv()}
+			class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-blue-500 border-blue-500 text-white transition-all hover:scale-110 hover:bg-blue-400 duration-300"
+		>
+			+
+		</button>
 	</div>
 </div>

@@ -1,19 +1,32 @@
 <script>
+	// Components and functions from other files
+	import TotalOfMonth from './totalOfMonth.svelte';
 	import { formatDay } from '$lib/components/formattingDay.js';
+	import { fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
+	import { backOut } from 'svelte/easing';
+
 	// Data from server
 	export let data;
 	export let total_data;
 	export let the_date;
 
-	// Local data
+	// Local
 	let date = new Date(data.the_date);
 	date = formatDay(date);
+	let money_data = false;
+	let money_id;
 	let l = '<';
 	let r = '>';
 	let monthName = new Date(data.the_date).toLocaleString('default', {
 		month: 'long',
 		year: 'numeric'
 	});
+
+	function editTransaction(id) {
+		money_id = id;
+		money_data = !money_data;
+	}
 
 	// Add date in the database
 	async function addDate(date) {
@@ -31,6 +44,7 @@
 	// Increasing the month
 	function increaseMonth(date) {
 		const dateObj = new Date(date);
+
 		dateObj.setMonth(dateObj.getMonth() + 1);
 		date = formatDay(dateObj);
 		addDate(date);
@@ -43,73 +57,118 @@
 		date = formatDay(dateObj);
 		addDate(date);
 	}
+
+	// Delete data
+	async function deleteData(money_id) {
+		const data = JSON.stringify(money_id);
+		await fetch('api/deleteData', {
+			method: 'POST',
+			body: data,
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+		location.reload();
+	}
 </script>
 
 <!-- UI -->
 <!-- Change month buttons-->
-<div class="flex pb-12 justify-between">
-	<div>
-		<button
-			class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-			on:click={() => decreaseMonth(date)}>{l}</button
+{#if money_data}	
+	<div
+		class="flex fixed w-full h-full justify-center items-center"
+		style="background-color: rgba(0,0,0,0.5);"
+		transition:fade
+	>
+		<div
+			class="flex flex-col justify-center align-middle w-1/4 h-1/4 border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800"
+			in:fly={{
+				x: 300,
+				easing: backOut
+			}}
+			out:fly={{
+				x: -300
+			}}
 		>
+			<div>
+				<h2 class="text-2xl font-semibold pb-6">EDIT TRANSACTION</h2>
+			</div>
+			<div class="items-center flex justify-center space-x-4">
+				<button
+					on:click={() => editTransaction()}
+					class="w-1/5 border rounded-lg border-red-500 text-red-600 hover:text-red-600 hover:bg-red-300 transition-all hover:scale-110 duration-300"
+				>
+					CLOSE
+				</button>
+				<button
+					class="w-1/5 border rounded-lg border-red-500 bg-red-500 text-white hover:bg-red-400 transition-all hover:scale-110 duration-300"
+					on:click={() => deleteData(money_id)}
+				>
+					DELETE
+				</button>
+			</div>
+		</div>
 	</div>
-	<div>
-		<h1 class="text-2xl">{monthName}</h1>
-	</div>
-	<div>
-		<button
-			class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-			on:click={() => increaseMonth(date)}>{r}</button
-		>
-	</div>
-</div>
+{/if}
 
 <!-- Showing the totals of the month -->
-{#each data.total_data as total_money}
-	<div class="border-b flex justify-between pr-12 pl-12 dark:border-zinc-600">
-		<div class="text-center">
-			<p class="font-semibold">Income</p>
-			<p class="text-blue-500">$ {total_money.total_income || 0}</p>
+<div class="w-4/5 h-full ml-auto flex flex-col pl-36 pr-36 pb-36 pt-16">
+	<div class="flex pb-12 justify-between">
+		<div>
+			<button
+				class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
+				on:click={() => decreaseMonth(date)}>{l}</button
+			>
 		</div>
-		<div class="text-center">
-			<p class="font-semibold">Expense</p>
-			<p class="text-red-500">$ {total_money.total_expense || 0}</p>
+
+		<div>
+			<h1 class="text-2xl">
+				{monthName}
+			</h1>
 		</div>
-		<div class="text-center">
-			<p class="font-semibold">Total</p>
-			<p class="font-semibold">$ {total_money.total || 0}</p>
+		<div>
+			<button
+				class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
+				on:click={() => increaseMonth(date)}>{r}</button
+			>
 		</div>
 	</div>
-{/each}
+	<TotalOfMonth {data} />
 
-<!-- Showing the data of the month -->
-<div class="flex flex-col justify-center space-y-8 pt-24 pr-20 pl-20">
-	{#each data.data as [day, entries]}
-		<div
-			class="space-y-4 rounded-lg border pb-16 pr-8 pl-8 bg-slate-50 shadow-lg dark:bg-zinc-800 dark:border-zinc-600"
-		>
-			<h2 class="text-2xl pt-4 font-semibold">{day}</h2>
-			{#each entries as entry}
-				{#if entry.income != null}
-					<div
-						class="p-4 flex justify-between hover:scale-105 transition-all duration-300 border-b dark:border-zinc-600 border-slate-300"
-					>
-						<p class="text-blue-500 font-semibold">{entry.category}</p>
-
-						<p class="text-blue-500">$ {entry.income}</p>
-					</div>
-				{/if}
-				{#if entry.expense != null}
-					<div
-						class="p-4 flex justify-between hover:scale-105 transition-all duration-300 border-b dark:border-zinc-600 border-slate-300"
-					>
-						<p class="text-red-500 font-semibold">{entry.category}</p>
-
-						<p class="text-red-500">$ {entry.expense}</p>
-					</div>
-				{/if}
-			{/each}
-		</div>
-	{/each}
+	<!-- Showing the data of the month -->
+	<div class="flex flex-col justify-center space-y-8 pt-24 pr-20 pl-20">
+		{#each data.data as [day, entries]}
+			<div
+				class="space-y-4 rounded-lg border pb-16 pr-8 pl-8 bg-slate-50 shadow-lg dark:bg-zinc-800 dark:border-zinc-600"
+			>
+				<h2 class="text-2xl pt-4 font-semibold">{day}</h2>
+				{#each entries as entry}
+					{#if entry.income != null}
+						<button
+							on:click={() => editTransaction(entry.money_id)}
+							class="p-2 flex justify-between hover:bg-slate-200 transition-all duration-300 border-b dark:border-zinc-600 dark:hover:bg-zinc-600 border-slate-300 w-full"
+						>
+							<p class="text-blue-500 font-semibold">
+								{entry.category}
+							</p>
+							<div class="flex space-x-2">
+								<p class="text-blue-500">$ {entry.income}</p>
+							</div>
+						</button>
+					{/if}
+					{#if entry.expense != null}
+						<button
+							on:click={() => editTransaction(entry.money_id)}
+							class="p-2 flex justify-between hover:bg-slate-200 transition-all duration-300 border-b dark:border-zinc-600 dark:hover:bg-zinc-600 border-slate-300 w-full"
+						>
+							<p class="text-red-500 font-semibold">{entry.category}</p>
+							<div class="flex space-x-2">
+								<p class="text-red-500">$ {entry.expense}</p>
+							</div></button
+						>
+					{/if}
+				{/each}
+			</div>
+		{/each}
+	</div>
 </div>

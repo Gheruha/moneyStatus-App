@@ -33,7 +33,7 @@ export async function load() {
 
 	// Total money (by month)
 	const total_results = await mysqlConnection.query(
-		'select sum(income) as total_income, sum(expense) as total_expense, sum(income) - sum(expense) as total from money where month(day_id) = ? and year(day_id) = ?',
+		'SELECT   SUM(CASE WHEN income IS NOT NULL THEN income ELSE 0 END) AS total_income,   SUM(CASE WHEN expense IS NOT NULL THEN expense ELSE 0 END) AS total_expense,   SUM(CASE WHEN income IS NOT NULL THEN income WHEN expense IS NOT NULL THEN -expense ELSE 0 END) AS total from money where month(day_id) = ? and year(day_id) = ?',
 		[month, year] // Use the placeholder for the month here as well
 	);
 
