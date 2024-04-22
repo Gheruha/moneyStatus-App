@@ -56,6 +56,8 @@
 		});
 		location.reload();
 	}
+
+	export let data;
 </script>
 
 <link
@@ -69,17 +71,16 @@
 		class="menu w-1/5 h-full fixed bg-slate-100 flex flex-col justify-between items-center dark:bg-zinc-800"
 	>
 		<div class="w-full flex flex-col space-y-2 mt-6 pt-8">
-			<button
+			<a
+				href="/"
 				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
-				><p>Daily</p></button
+				>Daily</a
 			>
-			<button
+
+			<a
+				href="/calendar"
 				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
-				><p>Month</p></button
-			>
-			<button
-				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
-				><p>Calendar</p></button
+				>Calendar</a
 			>
 			<button
 				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
@@ -223,8 +224,14 @@
 	{/if}
 
 	<!-- Content -->
+	{#key data.url}
+		<div in:fly={{ y: -100, duration: 250 }} class="w-full h-full">
+			<slot />
+		</div>
+	{/key}
+	<!-- Content -->
 
-	<slot />
+	<!-- Add data button-->
 	<div class="fixed bottom-12 right-10">
 		<button
 			on:click={() => addInfoExpense()}

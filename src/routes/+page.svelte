@@ -74,7 +74,7 @@
 
 <!-- UI -->
 <!-- Change month buttons-->
-{#if money_data}	
+{#if money_data}
 	<div
 		class="flex fixed w-full h-full justify-center items-center"
 		style="background-color: rgba(0,0,0,0.5);"
