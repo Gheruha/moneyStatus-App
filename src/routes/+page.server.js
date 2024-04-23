@@ -1,3 +1,6 @@
+/* +page.server.js for Daily Page */
+/* return grouped results (money data) & totals */
+
 import { mysqlConnectionFn } from '$lib/database/mysql';
 import { formatDay } from '$lib/components/formattingDay.js';
 
