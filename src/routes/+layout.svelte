@@ -82,9 +82,10 @@
 				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
 				>Calendar</a
 			>
-			<button
+			<a
+				href="/statistics"
 				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
-				><p>Statistics</p></button
+				>Statistics</a
 			>
 		</div>
 
