@@ -24,6 +24,7 @@ export async function load() {
 	);
 
 	return {
-		data: percentage_results[0]
+		data: percentage_results[0],
+		the_date: selectedDate
 	};
 }

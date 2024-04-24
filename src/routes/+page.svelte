@@ -72,8 +72,6 @@
 	}
 </script>
 
-<!-- UI -->
-<!-- Change month buttons-->
 {#if money_data}
 	<div
 		class="flex fixed w-full h-full justify-center items-center"
@@ -115,6 +113,7 @@
 <div class="w-4/5 h-full ml-auto flex flex-col pl-36 pr-36 pb-36 pt-16">
 	<div class="flex pb-12 justify-between">
 		<div>
+			<!-- Change month buttons-->
 			<button
 				class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
 				on:click={() => decreaseMonth(date)}>{l}</button
