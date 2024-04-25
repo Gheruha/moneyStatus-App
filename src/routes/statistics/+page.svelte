@@ -21,9 +21,10 @@
 
 	// functions
 	function getPercent(income_perc, expense_perc) {
-		income_percent = Math.floor(income_perc); // Extract integer part
+		income_percent = Math.floor(income_perc);
 		expense_percent = Math.floor(expense_perc);
 	}
+
 	function increaseWidthIncome() {
 		if (income_percent != null) {
 			if (width_income != income_percent) {
