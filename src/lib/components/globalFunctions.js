@@ -1,3 +1,5 @@
+// this file holds the global functions (the functions that are called in more than one file)
+
 export function formatDay(dateString) {
 	const date = new Date(dateString);
 	const year = date.getFullYear();
