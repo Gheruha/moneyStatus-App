@@ -44,3 +44,27 @@ export async function deleteData(money_id) {
 	});
 	location.reload();
 }
+
+export async function addInfoOfDay(income, today, category) {
+	const data = JSON.stringify({ income, today, category });
+	await fetch('api/writeDayInfo', {
+		method: 'POST',
+		body: data,
+		headers: {
+			'content-type': 'application/json'
+		}
+	});
+	location.reload();
+}
+
+export async function addInfoOfDayExpense(expense, today, category) {
+	const data = JSON.stringify({ expense, today, category });
+	await fetch('api/writeDayInfoExpense', {
+		method: 'POST',
+		body: data,
+		headers: {
+			'content-type': 'application/json'
+		}
+	});
+	location.reload();
+}
