@@ -1,3 +1,16 @@
+# About moneyStatus-App 💰
+
+This website is made with [`Svelte`](https://svelte.dev/) , [`Tailwind`](https://tailwindcss.com/docs/customizing-colors) and holds the data on a local ['mySQL'](https://www.mysql.com/) database.
+
+## The goal of the website
+
+Manage your money easy & fast. The website will give you beautiful and realistic experience ✨
+Also , helpful and beautiful statistics will make your life easier when it comes to knowing what your money are doing 💸
+And of course , navigating in calendar will not be a problem 📅
+
+
+
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
