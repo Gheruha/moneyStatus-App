@@ -1,6 +1,6 @@
 # About moneyStatus-App 💰
 
-This website is made with [`Svelte`](https://svelte.dev/) , [`Tailwind`](https://tailwindcss.com/docs/customizing-colors) and holds the data on a local ['mySQL'](https://www.mysql.com/) database.
+This website is made with [`Svelte`](https://svelte.dev/) , [`Tailwind`](https://tailwindcss.com/docs/customizing-colors) and holds the data on a local [`mySQL`](https://www.mysql.com/) database.
 
 ## The goal of the website
 
