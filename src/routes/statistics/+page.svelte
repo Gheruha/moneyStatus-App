@@ -1,6 +1,7 @@
 <script>
 	// imports
-	import { formatDay } from '$lib/components/formattingDay.js';
+	import { increaseMonth } from '$lib/components/globalFunctions.js';
+	import { decreaseMonth } from '$lib/components/globalFunctions.js';
 
 	// Data from server
 	export let data;
@@ -46,36 +47,6 @@
 		}
 	}
 	let intervalIdExpense = setInterval(increaseWidthExpense, 5);
-
-	// Add date in the database
-	async function addDate(date) {
-		const data = JSON.stringify(date);
-		await fetch('api/setMonth', {
-			method: 'POST',
-			body: data,
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-		location.reload();
-	}
-
-	// Increasing the month
-	function increaseMonth(date) {
-		const dateObj = new Date(date);
-
-		dateObj.setMonth(dateObj.getMonth() + 1);
-		date = formatDay(dateObj);
-		addDate(date);
-	}
-
-	// Decreasing the month
-	function decreaseMonth(date) {
-		const dateObj = new Date(date);
-		dateObj.setMonth(dateObj.getMonth() - 1);
-		date = formatDay(dateObj);
-		addDate(date);
-	}
 </script>
 
 <div class="w-4/5 h-full ml-auto flex flex-col pr-36 pl-36 pb-36 pt-16">

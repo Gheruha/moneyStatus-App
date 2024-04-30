@@ -2,7 +2,7 @@
 	import '../app.css';
 	import ThemeSwitch from '$lib/themeSwitch/themeSwitch.svelte';
 	import { onMount } from 'svelte';
-	import { formatDay } from '$lib/components/formattingDay.js';
+	import { formatDay } from '$lib/components/globalFunctions.js';
 	import { fade } from 'svelte/transition';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
@@ -235,7 +235,7 @@
 	{/key}
 	<!-- Content -->
 
-	<!-- Add data button-->
+	<!-- Add & delete data buttons -->
 	<div class="fixed bottom-12 right-10">
 		<button
 			on:click={() => addInfoExpense()}

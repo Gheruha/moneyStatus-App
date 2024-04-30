@@ -2,7 +2,7 @@
 /* return grouped results (money data) & totals */
 
 import { mysqlConnectionFn } from '$lib/database/mysql';
-import { formatDay } from '$lib/components/formattingDay.js';
+import { formatDay } from '$lib/components/globalFunctions.js';
 
 export async function load() {
 	let mysqlConnection = await mysqlConnectionFn();
