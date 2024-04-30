@@ -1,10 +1,13 @@
 <script>
 	// Components and functions from other files
 	import TotalOfMonth from './totalOfMonth.svelte';
-	import { formatDay } from '$lib/components/formattingDay.js';
+	import { formatDay } from '$lib/components/globalFunctions.js';
 	import { fade } from 'svelte/transition';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
+	import { increaseMonth } from '$lib/components/globalFunctions.js';
+	import { decreaseMonth } from '$lib/components/globalFunctions.js';
+	import { deleteData } from '$lib/components/globalFunctions.js';
 
 	// Data from server
 	export let data;
@@ -26,49 +29,6 @@
 	function editTransaction(id) {
 		money_id = id;
 		money_data = !money_data;
-	}
-
-	// Add date in the database
-	async function addDate(date) {
-		const data = JSON.stringify(date);
-		await fetch('api/setMonth', {
-			method: 'POST',
-			body: data,
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-		location.reload();
-	}
-
-	// Increasing the month
-	function increaseMonth(date) {
-		const dateObj = new Date(date);
-
-		dateObj.setMonth(dateObj.getMonth() + 1);
-		date = formatDay(dateObj);
-		addDate(date);
-	}
-
-	// Decreasing the month
-	function decreaseMonth(date) {
-		const dateObj = new Date(date);
-		dateObj.setMonth(dateObj.getMonth() - 1);
-		date = formatDay(dateObj);
-		addDate(date);
-	}
-
-	// Delete data
-	async function deleteData(money_id) {
-		const data = JSON.stringify(money_id);
-		await fetch('api/deleteData', {
-			method: 'POST',
-			body: data,
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-		location.reload();
 	}
 </script>
 
