@@ -3,10 +3,12 @@
 	import ThemeSwitch from '$lib/themeSwitch/themeSwitch.svelte';
 	import { onMount } from 'svelte';
 	import { formatDay } from '$lib/components/globalFunctions.js';
+	import { addInfoOfDay } from '$lib/components/globalFunctions.js';
+	import { addInfoOfDayExpense } from '$lib/components/globalFunctions.js';
 	import { fade } from 'svelte/transition';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
-	import { page } from '$app/stores'; // Import the `page` store from SvelteKit
+	import { page } from '$app/stores';
 
 	let currentPage;
 
@@ -41,30 +43,6 @@
 	function updateDate() {
 		const date = new Date();
 		today = formatDay(date);
-	}
-
-	async function addInfoOfDay(income, today, category) {
-		const data = JSON.stringify({ income, today, category });
-		await fetch('api/writeDayInfo', {
-			method: 'POST',
-			body: data,
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-		location.reload();
-	}
-
-	async function addInfoOfDayExpense(expense, today, category) {
-		const data = JSON.stringify({ expense, today, category });
-		await fetch('api/writeDayInfoExpense', {
-			method: 'POST',
-			body: data,
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-		location.reload();
 	}
 
 	export let data;
