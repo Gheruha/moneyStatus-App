@@ -6,11 +6,21 @@
 	import { fade } from 'svelte/transition';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
+	import { page } from '$app/stores'; // Import the `page` store from SvelteKit
+
+	let currentPage;
+
+	$: currentPage = $page.url.pathname;
 
 	let addInfo = false;
 	let addInfoExp = false;
 	let income, expense, category;
 	let today = '';
+	let navLinks = [
+		{ path: '/', label: 'Daily' },
+		{ path: '/calendar', label: 'Calendar' },
+		{ path: '/statistics', label: 'Statistics' }
+	];
 
 	function addInfoDiv() {
 		addInfo = !addInfo;
@@ -71,22 +81,15 @@
 		class="menu w-1/5 h-full fixed bg-slate-100 flex flex-col justify-between items-center dark:bg-zinc-800"
 	>
 		<div class="w-full flex flex-col space-y-2 mt-6 pt-8">
-			<a
-				href="/"
-				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
-				>Daily</a
-			>
-
-			<a
-				href="/calendar"
-				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
-				>Calendar</a
-			>
-			<a
-				href="/statistics"
-				class="focus:outline-none underline text-blue-500 hover:bg-blue-400 hover:text-white focus:ring-1 focus:ring-blue-300 font-medium rounded-sm ml-4 mr-4 text-sm px-3 py-2 transition-all hover:scale-110 duration-300"
-				>Statistics</a
-			>
+			{#each navLinks as link}
+				<a
+					href={link.path}
+					class="focus:outline-none text-blue-500 hover:bg-blue-400 hover:text-white font-medium rounded-sm ml-4 mr-4 px-3 py-2 transition-all hover:scale-110 duration-300
+					{currentPage === link.path ? 'text-white bg-blue-500' : ''}"
+				>
+					{link.label}
+				</a>
+			{/each}
 		</div>
 
 		<div class="flex">
