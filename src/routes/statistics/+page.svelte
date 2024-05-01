@@ -2,6 +2,9 @@
 	// imports
 	import { increaseMonth } from '$lib/components/globalFunctions.js';
 	import { decreaseMonth } from '$lib/components/globalFunctions.js';
+	import { goToActualMonth } from '$lib/components/globalFunctions.js';
+	import { formatDay } from '$lib/components/globalFunctions.js';
+	import { onMount } from 'svelte';
 
 	// Data from server
 	export let data;
@@ -19,6 +22,20 @@
 	let width_expense = 0;
 	let income_percent = 0;
 	let expense_percent = 0;
+	let today = '';
+
+	onMount(() => {
+		updateDate();
+		const intervalId = setInterval(updateDate, 320000); // update every 5 minutes
+
+		// Optionally, clear the interval on component unmount
+		return () => clearInterval(intervalId);
+	});
+
+	function updateDate() {
+		const date = new Date();
+		today = formatDay(date);
+	}
 
 	// functions
 	function getPercent(income_perc, expense_perc) {
@@ -53,6 +70,7 @@
 	<div>
 		<h1 class="text-4xl font-semibold">Statistics Page 📊</h1>
 	</div>
+	<button on:click={goToActualMonth(today)}>Acutual Month</button>
 
 	<div class="pt-36 pr-20 pl-20">
 		<div

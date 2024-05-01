@@ -20,6 +20,11 @@ async function addDate(date) {
 	});
 	location.reload();
 }
+
+export function goToActualMonth(date) {
+	addDate(formatDay(date));
+}
+
 export function increaseMonth(date) {
 	const dateObj = new Date(date);
 
