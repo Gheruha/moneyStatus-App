@@ -2,7 +2,7 @@
 	// imports
 	import { increaseMonth } from '$lib/components/globalFunctions.js';
 	import { decreaseMonth } from '$lib/components/globalFunctions.js';
-	
+
 	// Data from server
 	export let data;
 	export let the_date;

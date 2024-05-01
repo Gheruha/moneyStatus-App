@@ -1,4 +1,6 @@
 <script>
+	// imports
+	export let data;
 	import '../app.css';
 	import ThemeSwitch from '$lib/themeSwitch/themeSwitch.svelte';
 	import GoToActualMonth from '$lib/components/goToActualMonth.svelte';
@@ -11,12 +13,12 @@
 	import { backOut } from 'svelte/easing';
 	import { page } from '$app/stores';
 
+	// local
 	let currentPage;
-
 	$: currentPage = $page.url.pathname;
-
 	let addInfo = false;
 	let addInfoExp = false;
+	let showActualMonth = true;
 	let income, expense, category;
 	let today = '';
 	let navLinks = [
@@ -27,10 +29,12 @@
 
 	function addInfoDiv() {
 		addInfo = !addInfo;
+		showActualMonth = !showActualMonth;
 	}
 
 	function addInfoExpense() {
 		addInfoExp = !addInfoExp;
+		showActualMonth = !showActualMonth;
 	}
 
 	onMount(() => {
@@ -45,8 +49,6 @@
 		const date = new Date();
 		today = formatDay(date);
 	}
-
-	export let data;
 </script>
 
 <link
@@ -218,7 +220,12 @@
 	<div class="fixed bottom-12 right-10">
 		<button
 			on:click={() => addInfoExpense()}
-			class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-red-500 border-red-500 text-white transition-all hover:scale-110 hover:bg-red-400 duration-300"
+			class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-red-500 border-red-500 text-white transition-all hover:scale-110 hover:bg-red-400 duration-300 {addInfo ==
+			true
+				? 'cursor-not-allowed bg-slate-100 border-slate-200 hover:bg-slate-200 text-black dark:bg-zinc-600 dark:border-zinc-700 dark:text-white'
+				: ''}
+			"
+			disabled={addInfo}
 		>
 			-
 		</button>
@@ -226,12 +233,17 @@
 	<div class="fixed bottom-32 right-10">
 		<button
 			on:click={() => addInfoDiv()}
-			class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-blue-500 border-blue-500 text-white transition-all hover:scale-110 hover:bg-blue-400 duration-300"
+			class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-blue-500 border-blue-500 text-white transition-all hover:scale-110 hover:bg-blue-400 duration-300 {addInfoExp ==
+			true
+				? 'cursor-not-allowed bg-slate-100 border-slate-200 hover:bg-slate-200 text-black dark:bg-zinc-600 dark:border-zinc-700 dark:text-white'
+				: ''}
+				"
+			disabled={addInfoExp}
 		>
 			+
 		</button>
 	</div>
 
 	<!-- Go to Actual Month Button-->
-	<GoToActualMonth />
+	<GoToActualMonth {showActualMonth} />
 </div>
