@@ -1,6 +1,7 @@
 <script>
 	import '../app.css';
 	import ThemeSwitch from '$lib/themeSwitch/themeSwitch.svelte';
+	import GoToActualMonth from '$lib/components/goToActualMonth.svelte';
 	import { onMount } from 'svelte';
 	import { formatDay } from '$lib/components/globalFunctions.js';
 	import { addInfoOfDay } from '$lib/components/globalFunctions.js';
@@ -230,4 +231,7 @@
 			+
 		</button>
 	</div>
+
+	<!-- Go to Actual Month Button-->
+	<GoToActualMonth />
 </div>
