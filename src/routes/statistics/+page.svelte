@@ -50,12 +50,9 @@
 	let intervalIdExpense = setInterval(increaseWidthExpense, 5);
 </script>
 
-<div class="w-4/5 h-full ml-auto flex flex-col pr-36 pl-36 pb-36 pt-16">
-	<div>
-		<h1 class="text-4xl font-semibold">Statistics Page 📊</h1>
-	</div>
+<div class="w-4/5 h-full ml-auto flex flex-col pr-36 pl-36 pb-36 pt-36">
 
-	<div class="pt-36 pr-20 pl-20">
+	<div class="pr-20 pl-20">
 		<div
 			class="p-6 border space-y-4 bg-slate-50 rounded-lg shadow-lg dark:bg-zinc-800 dark:border-zinc-600"
 		>

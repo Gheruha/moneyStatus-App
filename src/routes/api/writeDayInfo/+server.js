@@ -9,7 +9,7 @@ function generateId() {
 const INSERT_MONEY =
 	'insert into money(money_id , income , day_id , category) values(?  , ? , ? , ?)';
 
-export async function POST({ request }) {
+export async function POST({ request }) { 
 	// Necessary stuff for commiting the query
 	const { income, today, category } = await request.json();
 	let mysqlConnection = await mysqlConnectionFn();
