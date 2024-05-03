@@ -1,8 +1,15 @@
 <script>
+	// imports
+	import { increaseMonth } from '$lib/components/globalFunctions.js';
+	import { decreaseMonth } from '$lib/components/globalFunctions.js';
+
+	export let data;
+
 	// local data
 	let l = '<';
 	let r = '>';
-	let monthName = new Date().toLocaleString('default', {
+	let date = new Date(data.data);
+	let monthName = new Date(date).toLocaleString('default', {
 		month: 'long',
 		year: 'numeric'
 	});
@@ -12,20 +19,19 @@
 <div class="w-4/5 h-full ml-auto flex flex-col pl-36 pr-36 pb-36 pt-36">
 	<!-- Calendar -->
 	<div class="border rounded-lg bg-slate-50 shadow-lg dark:bg-zinc-800 dark:border-zinc-600 pb-10">
-		<div class="flex justify-between border-b p-10 dark:border-zinc-600">
+		<div class="flex justify-between p-10 border-b dark:border-zinc-600">
 			<button
 				class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-				>{l}</button
+				on:click={() => decreaseMonth(date)}>{l}</button
 			>
 			<h1 class="text-2xl">
 				{monthName}
 			</h1>
 			<button
 				class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-				>{r}</button
+				on:click={() => increaseMonth(date)}>{r}</button
 			>
 		</div>
-
 		<!-- Weekdays-->
 		<div
 			class="weekdays flex flex-wrap justify-between pt-4 pb-4 text-xl text-blue-500 bg-slate-200 dark:bg-zinc-700"

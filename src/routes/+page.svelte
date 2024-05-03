@@ -1,13 +1,11 @@
 <script>
 	// Components and functions from other files
 	import TotalOfMonth from './totalOfMonth.svelte';
-	import { formatDay } from '$lib/components/globalFunctions.js';
 	import { fade } from 'svelte/transition';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
-	import { increaseMonth } from '$lib/components/globalFunctions.js';
-	import { decreaseMonth } from '$lib/components/globalFunctions.js';
 	import { deleteData } from '$lib/components/globalFunctions.js';
+	import ChangeMonth from '../lib/components/changeMonth.svelte';
 
 	// Data from server
 	export let data;
@@ -15,16 +13,8 @@
 	export let the_date;
 
 	// Local
-	let date = new Date(data.the_date);
-	date = formatDay(date);
 	let money_data = false;
 	let money_id;
-	let l = '<';
-	let r = '>';
-	let monthName = new Date(data.the_date).toLocaleString('default', {
-		month: 'long',
-		year: 'numeric'
-	});
 
 	function editTransaction(id) {
 		money_id = id;
@@ -71,27 +61,12 @@
 
 <!-- Showing the totals of the month -->
 <div class="w-4/5 h-full ml-auto flex flex-col pl-36 pr-36 pb-36 pt-16">
-	<div class="flex pb-12 justify-between">
-		<div>
-			<!-- Change month buttons-->
-			<button
-				class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-				on:click={() => decreaseMonth(date)}>{l}</button
-			>
-		</div>
-
-		<div>
-			<h1 class="text-2xl">
-				{monthName}
-			</h1>
-		</div>
-		<div>
-			<button
-				class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-				on:click={() => increaseMonth(date)}>{r}</button
-			>
-		</div>
+	<!-- Change Month Component -->
+	<div class="pb-6">
+		<ChangeMonth {data} />
 	</div>
+
+	<!-- Total Of Month Component-->
 	<TotalOfMonth {data} />
 
 	<!-- Showing the data of the month -->

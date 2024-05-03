@@ -1,25 +1,16 @@
 <script>
 	// imports
-	import { increaseMonth } from '$lib/components/globalFunctions.js';
-	import { decreaseMonth } from '$lib/components/globalFunctions.js';
+	import ChangeMonth from '$lib/components/changeMonth.svelte';
 
 	// Data from server
 	export let data;
 	export let the_date;
 
 	// local data
-	let l = '<';
-	let r = '>';
-	let date = new Date(data.the_date);
-	let monthName = new Date(data.the_date).toLocaleString('default', {
-		month: 'long',
-		year: 'numeric'
-	});
 	let width_income = 0;
 	let width_expense = 0;
 	let income_percent = 0;
 	let expense_percent = 0;
-	let today = '';
 
 	// functions
 	function getPercent(income_perc, expense_perc) {
@@ -51,24 +42,15 @@
 </script>
 
 <div class="w-4/5 h-full ml-auto flex flex-col pr-36 pl-36 pb-36 pt-36">
-
 	<div class="pr-20 pl-20">
 		<div
 			class="p-6 border space-y-4 bg-slate-50 rounded-lg shadow-lg dark:bg-zinc-800 dark:border-zinc-600"
 		>
-			<div class="flex justify-between p-4 border-b dark:border-zinc-600">
-				<button
-					class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-					on:click={() => decreaseMonth(date)}>{l}</button
-				>
-				<h1 class="text-2xl">
-					{monthName}
-				</h1>
-				<button
-					class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-					on:click={() => increaseMonth(date)}>{r}</button
-				>
+			<!-- Change Month Component -->
+			<div class="border-b dark:border-zinc-600">
+				<ChangeMonth {data} />
 			</div>
+
 			{#each data.data as percentages}
 				<div class="h-0 opacity-0">
 					{getPercent(percentages.income_percent, percentages.expense_percent)}
