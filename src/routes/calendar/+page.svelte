@@ -21,16 +21,19 @@
 	<div class="border rounded-lg bg-slate-50 shadow-lg dark:bg-zinc-800 dark:border-zinc-600 pb-10">
 		<div class="flex justify-between p-10 border-b dark:border-zinc-600">
 			<button
-				class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-				on:click={() => decreaseMonth(date)}>{l}</button
+				class="rounded-full transition-all hover:scale-125 duration-300"
+				on:click={() => decreaseMonth(date)}
+				><span class="material-symbols-outlined"> arrow_back_ios </span></button
 			>
 			<h1 class="text-2xl">
 				{monthName}
 			</h1>
 			<button
-				class="p-2 w-10 rounded-full bg-blue-500 transition-all hover:bg-blue-400 hover:scale-110 duration-300 text-white"
-				on:click={() => increaseMonth(date)}>{r}</button
+				class="rounded-full transition-all hover:scale-125 duration-300"
+				on:click={() => increaseMonth(date)}
 			>
+				<span class="material-symbols-outlined"> arrow_forward_ios </span>
+			</button>
 		</div>
 		<!-- Weekdays-->
 		<div
