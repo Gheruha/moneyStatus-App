@@ -12,6 +12,9 @@
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
 	import { page } from '$app/stores';
+	import { supabase } from '$lib/database/supabaseClient.js';
+
+	// Supabase
 
 	// local
 	let currentPage;
@@ -27,6 +30,7 @@
 		{ path: '/statistics', label: 'Statistics' }
 	];
 
+	// functions
 	function addInfoDiv() {
 		addInfo = !addInfo;
 		showActualMonth = !showActualMonth;
