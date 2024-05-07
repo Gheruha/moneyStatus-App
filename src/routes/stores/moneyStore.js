@@ -12,16 +12,15 @@ export const loadIncomes = async () => {
 	incomes.set(data);
 };
 
-loadIncomes();
-export const addIncome = async (income) => {
+export const addIncome = async (income, user_id) => {
 	const { data, error } = await supabase
 		.from('money')
-		.insert([{ money_id: crypto.randomUUID(), income, user_id: crypto.randomUUID() }]);
+		.insert([{ money_id: crypto.randomUUID(), income, user_id }]);
 
 	if (error) {
 		return console.error(error);
 	}
-
+	loadIncomes();
 	incomes.update((cur) => [...cur, data[0]]);
 };
 

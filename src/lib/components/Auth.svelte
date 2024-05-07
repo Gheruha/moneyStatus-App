@@ -1,0 +1,51 @@
+<script>
+	import { supabase } from '$lib/database/supabaseClient.js';
+	import { fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
+	import { backOut } from 'svelte/easing';
+
+	let loading = false;
+	let email;
+
+	const handleLogin = async () => {
+		try {
+			loading = true;
+			console.log(email);
+			const { error } = await supabase.auth.signInWithOtp({ email });
+			if (error) throw error;
+
+			alert('✅ Check your email for the login link !');
+		} catch (err) {
+			alert(err);
+		} finally {
+			loading = false;
+		}
+	};
+</script>
+
+<div
+	class="w-3/5 flex flex-col justify-center items-center rounded-lg bg-slate-50 shadow-lg dark:bg-zinc-800 dark:border-zinc-600"
+>
+	<form on:submit|preventDefault={handleLogin}>
+		<div class="pt-10">
+			<h1 class="text-4xl font-semibold">Log In</h1>
+			<p class="pt-2 dark:text-gray-400">Sign in via magic link with your email below.</p>
+		</div>
+
+		<div class="pt-10 flex flex-col text-left">
+			<label for="email">Email: </label>
+			<input
+				type="email"
+				class="bg-slate-100 text-zinc-800 p-2 border border-slate-700 dark:border-zinc-600 dark:text-slate-100 rounded-lg dark:bg-zinc-800"
+				placeholder="ex. example@gmail.com"
+				bind:value={email}
+			/>
+			<div class="pt-4 pb-10">
+				<button
+					class="p-2 w-full border rounded-lg border-blue-500 bg-blue-500 text-white hover:bg-blue-400 transition-all hover:scale-105 duration-300"
+					>SUBMIT
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
