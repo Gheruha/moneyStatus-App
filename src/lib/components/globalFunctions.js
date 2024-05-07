@@ -1,3 +1,5 @@
+import { supabase } from '$lib/database/supabaseClient.js';
+
 // this file holds the global functions (the functions that are called in more than one file)
 
 export function formatDay(dateString) {
@@ -61,7 +63,7 @@ export async function addInfoOfDay(income, today, category) {
 			'content-type': 'application/json'
 		}
 	});
-	location.reload();
+	// location.reload();
 }
 
 export async function addInfoOfDayExpense(expense, today, category) {

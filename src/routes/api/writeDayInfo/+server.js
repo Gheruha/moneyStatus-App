@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { mysqlConnectionFn } from '$lib/database/mysql.js';
 import { formatDay } from '$lib/components/globalFunctions.js';
+import { supabase } from '$lib/database/supabaseClient.js';
 
 function generateId() {
 	const randomString = Math.random().toString(36).substring(2, 15);
@@ -17,6 +18,5 @@ export async function POST({ request }) {
 
 	// Executing the query
 	let results = await mysqlConnection.query(INSERT_MONEY, [generateId(), income, today, category]);
-
 	return json(results);
 }

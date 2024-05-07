@@ -1,4 +1,4 @@
-<script>
+<script lang=" ts">
 	// imports
 	export let data;
 	import '../app.css';
@@ -12,9 +12,20 @@
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
 	import { page } from '$app/stores';
+	import { loadIncomes } from './stores/moneyStore';
+	// Supabase
+	import { invalidateAll } from '$app/navigation';
 	import { supabase } from '$lib/database/supabaseClient.js';
 
-	// Supabase
+	// onMount(() => {
+	// 	const {
+	// 		data: { subscription }
+	// 	} = supabase.auth.onAuthStateChange(() => {
+	// 		invalidateAll();
+	// 	});
+
+	// 	return () => subscription.unsubscribe();
+	// });
 
 	// local
 	let currentPage;
