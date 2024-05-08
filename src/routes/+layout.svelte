@@ -28,17 +28,13 @@
 		}
 	});
 
-	const logOut = () => {
-		console.log('Log Out');
-		supabase.auth.signOut();
-	};
-
 	// local
 	let currentPage;
 	$: currentPage = $page.url.pathname;
 	let addInfo = false;
 	let addInfoExp = false;
 	let showActualMonth = true;
+	let showAccountOptions = false;
 	let income, expense, category;
 	let today = '';
 	let navLinks = [
@@ -48,6 +44,12 @@
 	];
 
 	// functions
+
+	const logOut = () => {
+		console.log('Log Out');
+		supabase.auth.signOut();
+	};
+
 	function addInfoDiv() {
 		addInfo = !addInfo;
 		showActualMonth = !showActualMonth;
@@ -82,11 +84,32 @@
 	{#if $user}
 		<!-- LogOut Button -->
 		<div class="flex justify-end w-full fixed p-4">
-			<button
-				on:click={logOut}
-				class="p-2 border rounded-lg border-blue-500 bg-blue-500 text-white hover:bg-blue-400 transition-all hover:scale-110 duration-300"
-				>Log Out</button
-			>
+			<div transition:fade class="w-2/5 items-end text-center flex flex-col justify-center">
+				<button on:click={() => (showAccountOptions = !showAccountOptions)}
+					><span class="material-symbols-outlined icon" style="font-size:40px">
+						account_circle
+					</span></button
+				>
+				{#if showAccountOptions}
+					<div
+						class="p-2 border rounded-lg bg-slate-50 shadow-lg dark:bg-zinc-800 dark:border-zinc-600 space-y-1"
+						in:fly={{
+							y: -40,
+							easing: backOut
+						}}
+						out:fly={{
+							y: -10
+						}}
+					>
+						<p class="border-b border-slate-300 dark:border-zinc-600">{$user.email}</p>
+						<button
+							on:click={logOut}
+							class="p-1 w-full border rounded-lg border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500 transition-all hover:scale-110 duration-300"
+							>Log Out</button
+						>
+					</div>
+				{/if}
+			</div>
 		</div>
 		<!-- LogOut Button -->
 
