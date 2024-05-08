@@ -4,8 +4,6 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { formatDay } from '$lib/components/globalFunctions.js';
-	import { addInfoOfDay } from '$lib/components/globalFunctions.js';
-	import { addInfoOfDayExpense } from '$lib/components/globalFunctions.js';
 	import { fade } from 'svelte/transition';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
@@ -13,6 +11,8 @@
 	import { user } from './stores/authStore';
 	import { supabase } from '$lib/database/supabaseClient.js';
 	import { loadIncomes } from './stores/moneyStore';
+	import { addIncome } from './stores/moneyStore';
+	import { addExpense } from './stores/moneyStore';
 
 	// Components
 	import ThemeSwitch from '$lib/themeSwitch/themeSwitch.svelte';
@@ -194,7 +194,7 @@
 							CLOSE
 						</button>
 						<button
-							on:click={() => addInfoOfDay(income, today, category)}
+							on:click={() => addIncome(income, formatDay(today), category, $user.id)}
 							class="w-1/5 border rounded-lg border-blue-500 bg-blue-500 text-white hover:bg-blue-400 transition-all hover:scale-110 duration-300"
 						>
 							ADD
@@ -256,7 +256,7 @@
 							CLOSE
 						</button>
 						<button
-							on:click={() => addInfoOfDayExpense(expense, today, category)}
+							on:click={() => addExpense(expense, formatDay(today), category, $user.id)}
 							class="w-1/5 border rounded-lg border-red-500 bg-red-500 text-white hover:bg-red-400 transition-all hover:scale-110 duration-300"
 						>
 							ADD
@@ -275,7 +275,7 @@
 		{/key}
 		<!-- Content -->
 
-		<!-- Add & delete data buttons -->
+		<!-- Add income & expense buttons -->
 		<div class="fixed bottom-12 right-10">
 			<button
 				on:click={() => addInfoExpense()}
@@ -302,16 +302,16 @@
 				+
 			</button>
 		</div>
-		<!-- Add & delete data buttons -->
+		<!-- Add income & expense buttons -->
 
 		<!-- Go to Actual Month Button-->
 		<GoToActualMonth {showActualMonth} />
 
-		<!-- Auth page-->
+		<!-- Auth page if there is no user session -->
 	{:else}
 		<div class="w-full h-full flex justify-center pt-52">
 			<Auth />
 		</div>
 	{/if}
-	<!-- Auth page-->
+	<!-- Auth page if there is no user session -->
 </div>

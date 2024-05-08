@@ -6,8 +6,6 @@
 	export let data;
 
 	// local data
-	let l = '<';
-	let r = '>';
 	let date = new Date(data.data);
 	let monthName = new Date(date).toLocaleString('default', {
 		month: 'long',

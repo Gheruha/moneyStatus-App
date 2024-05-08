@@ -12,14 +12,27 @@ export const loadIncomes = async () => {
 	incomes.set(data);
 };
 
-export const addIncome = async (income, user_id) => {
+export const addIncome = async (income, day_id, category, user_id) => {
 	const { data, error } = await supabase
 		.from('money')
-		.insert([{ money_id: crypto.randomUUID(), income, user_id }]);
+		.insert([{ money_id: crypto.randomUUID(), income, day_id, category, user_id }]);
 
 	if (error) {
 		return console.error(error);
 	}
+	loadIncomes();
+	incomes.update((cur) => [...cur, data[0]]);
+};
+
+export const addExpense = async (expense, day_id, category, user_id) => {
+	const { data, error } = await supabase
+		.from('money')
+		.insert([{ money_id: crypto.randomUUID(), expense, day_id, category, user_id }]);
+
+	if (error) {
+		return console.error(error);
+	}
+
 	loadIncomes();
 	incomes.update((cur) => [...cur, data[0]]);
 };
