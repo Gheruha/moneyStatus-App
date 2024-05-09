@@ -10,7 +10,7 @@
 	import { page } from '$app/stores';
 	import { user } from './stores/authStore';
 	import { supabase } from '$lib/database/supabaseClient.js';
-	import { loadIncomes } from './stores/moneyStore';
+	import { loadMoney } from './stores/moneyStore';
 	import { addIncome } from './stores/moneyStore';
 	import { addExpense } from './stores/moneyStore';
 
@@ -24,7 +24,7 @@
 		user.set(session?.user);
 
 		if (session?.user) {
-			loadIncomes();
+			loadMoney();
 		}
 	});
 

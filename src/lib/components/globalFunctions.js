@@ -9,35 +9,8 @@ export function formatDay(dateString) {
 	return `${year}-${month}-${day}`;
 }
 
-async function addDate(date) {
-	const data = JSON.stringify(date);
-	await fetch('api/setMonth', {
-		method: 'POST',
-		body: data,
-		headers: {
-			'content-type': 'application/json'
-		}
-	});
-	location.reload();
-}
-
 export function goToActualMonth(date) {
 	addDate(formatDay(date));
-}
-
-export function increaseMonth(date) {
-	const dateObj = new Date(date);
-
-	dateObj.setMonth(dateObj.getMonth() + 1);
-	date = formatDay(dateObj);
-	addDate(date);
-}
-
-export function decreaseMonth(date) {
-	const dateObj = new Date(date);
-	dateObj.setMonth(dateObj.getMonth() - 1);
-	date = formatDay(dateObj);
-	addDate(date);
 }
 
 export async function deleteData(money_id) {

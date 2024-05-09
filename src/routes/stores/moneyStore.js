@@ -1,15 +1,15 @@
 import { writable } from 'svelte/store';
 import { supabase } from '$lib/database/supabaseClient.js';
 
-export const incomes = writable([]);
+export const money = writable([]);
 
-export const loadIncomes = async () => {
+export const loadMoney = async () => {
 	const { data, error } = await supabase.from('money').select();
 
 	if (error) {
 		return console.error(error);
 	}
-	incomes.set(data);
+	money.set(data);
 };
 
 export const addIncome = async (income, day_id, category, user_id) => {
@@ -20,8 +20,8 @@ export const addIncome = async (income, day_id, category, user_id) => {
 	if (error) {
 		return console.error(error);
 	}
-	loadIncomes();
-	incomes.update((cur) => [...cur, data[0]]);
+	loadMoney();
+	money.update((cur) => [...cur, data[0]]);
 };
 
 export const addExpense = async (expense, day_id, category, user_id) => {
@@ -33,14 +33,14 @@ export const addExpense = async (expense, day_id, category, user_id) => {
 		return console.error(error);
 	}
 
-	loadIncomes();
-	incomes.update((cur) => [...cur, data[0]]);
+	loadMoney();
+	money.update((cur) => [...cur, data[0]]);
 };
 
 export const deleteIncome = async (money_id) => {
 	const { error } = await supabase.from('money').delete().match({ money_id });
 
-	incomes.update((incomes) => incomes.filter((income) => income.money_id != money_id));
+	money.update((money) => money.filter((mon) => mon.money_id != money_id));
 
 	if (error) {
 		return console.error(error);
