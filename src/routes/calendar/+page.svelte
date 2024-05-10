@@ -1,7 +1,7 @@
 <script>
 	// imports
-	import { increaseMonth } from '$lib/components/globalFunctions.js';
-	import { decreaseMonth } from '$lib/components/globalFunctions.js';
+	// import { increaseMonth } from '$lib/components/globalFunctions.js';
+	// import { decreaseMonth } from '$lib/components/globalFunctions.js';
 
 	export let data;
 

@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { supabase } from '$lib/database/supabaseClient.js';
+import { date } from './dateStore';
 
 export const money = writable([]);
 

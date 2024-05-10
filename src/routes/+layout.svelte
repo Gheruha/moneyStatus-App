@@ -40,14 +40,20 @@
 	let navLinks = [
 		{ path: '/', label: 'Daily' },
 		{ path: '/calendar', label: 'Calendar' },
-		{ path: '/statistics', label: 'Statistics' }
+		{ path: '/statistics', label: 'Statistics' },
+		{ path: '/testing', label: 'Testing' }
 	];
 
 	// functions
-
 	const logOut = () => {
 		console.log('Log Out');
 		supabase.auth.signOut();
+	};
+
+	const addIncomeReset = (income, day_id, category, user) => {
+		addIncome(income, day_id, category, user);
+		addInfoDiv();
+		income.set(0);
 	};
 
 	function addInfoDiv() {
@@ -194,7 +200,7 @@
 							CLOSE
 						</button>
 						<button
-							on:click={() => addIncome(income, formatDay(today), category, $user.id)}
+							on:click={() => addIncomeReset(income, formatDay(today), category, $user.id)}
 							class="w-1/5 border rounded-lg border-blue-500 bg-blue-500 text-white hover:bg-blue-400 transition-all hover:scale-110 duration-300"
 						>
 							ADD
