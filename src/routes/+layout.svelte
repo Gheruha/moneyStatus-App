@@ -35,7 +35,8 @@
 	let addInfoExp = false;
 	let showActualMonth = true;
 	let showAccountOptions = false;
-	let income, expense, category;
+	let income = 0;
+	let expense, category;
 	let today = '';
 	let navLinks = [
 		{ path: '/', label: 'Daily' },
@@ -50,10 +51,10 @@
 		supabase.auth.signOut();
 	};
 
-	const addIncomeReset = (income, day_id, category, user) => {
-		addIncome(income, day_id, category, user);
+	const handleIncome = (income, today, category, user) => {
+		addIncome(income, today, category, user);
+		income = 0;
 		addInfoDiv();
-		income.set(0);
 	};
 
 	function addInfoDiv() {
@@ -166,7 +167,7 @@
 					<div>
 						<h2 class="text-2xl font-semibold pb-6">NEW INCOME</h2>
 					</div>
-					<form action="" class="flex flex-col">
+					<form class="flex flex-col">
 						<label for="" class="text-slate-500 text-md dark:text-zinc-300">
 							Income $: <br />
 							<input
@@ -200,7 +201,7 @@
 							CLOSE
 						</button>
 						<button
-							on:click={() => addIncomeReset(income, formatDay(today), category, $user.id)}
+							on:click={handleIncome(income, today, category, $user.id)}
 							class="w-1/5 border rounded-lg border-blue-500 bg-blue-500 text-white hover:bg-blue-400 transition-all hover:scale-110 duration-300"
 						>
 							ADD
