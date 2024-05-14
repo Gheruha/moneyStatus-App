@@ -18,3 +18,14 @@ body {
 .icon {
 	color: #3b82f6;
 }
+
+.transactions-div {
+	padding-left: 192px;
+	padding-right: 192px;
+}
+@media (max-width: 1060px) {
+	.transactions-div {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+}

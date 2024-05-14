@@ -1,8 +1,8 @@
 <script>
 	import { supabase } from '$lib/database/supabaseClient.js';
+	import loginPhoto from '$lib/images/login.png';
 
 	let loading = false;
-	let confirmation_link = false;
 	let email;
 
 	const handleLogin = async () => {
@@ -21,15 +21,16 @@
 </script>
 
 <div
-	class="w-3/5 flex flex-col justify-center items-center rounded-lg shadow-lg bg-gradient-to-r from-slate-50 to-blue-200 dark:bg-gradient-to-r dark:from-slate-700 dark:to-zinc-800"
+	class="w-4/5 flex justify-between pr-36 pl-12 items-center rounded-lg shadow-lg bg-gradient-to-r from-blue-200 to-slate-50 dark:bg-gradient-to-r dark:from-slate-700 dark:to-zinc-800"
 >
+	<img src={loginPhoto} alt="photo" />
 	<form on:submit|preventDefault={handleLogin}>
 		<div class="pt-10">
 			<h1 class="text-4xl font-semibold">Welcome !</h1>
 			<p class="pt-2 dark:text-gray-400">Sign in via magic link with your email below.</p>
 		</div>
 
-		<div class="pt-10 flex flex-col text-left">
+		<div class="pt-10 w-96 flex flex-col text-left">
 			<label for="email">Email: </label>
 			<input
 				type="email"

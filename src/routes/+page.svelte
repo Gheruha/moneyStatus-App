@@ -9,14 +9,23 @@
 	import { backOut } from 'svelte/easing';
 
 	let groupedByDay = {};
+	let total_income, total_expense, total;
 
 	$: {
+		total_income = 0;
+		total_expense = 0;
+		total = 0;
 		groupedByDay = {}; // Reset on each update
 		$filteredMoney.forEach((entry) => {
 			const day = entry.day_id;
+			const income = entry.income;
+			const expense = entry.expense;
+			total_income += income;
+			total_expense += expense;
 			groupedByDay[day] = groupedByDay[day] || [];
 			groupedByDay[day].push(entry);
 		});
+		total = total_income - total_expense;
 	}
 
 	let money_data = false;
@@ -72,7 +81,7 @@
 {/if}
 
 <!-- Main Div -->
-<div class="w-4/5 h-full ml-auto flex flex-col pl-36 pr-36 pb-36 pt-28 space-y-8">
+<div class="transactions-div w-4/5 h-full ml-auto flex flex-col pb-36 pt-28 space-y-8">
 	<!-- Change Month -->
 	<div>
 		<ChangeMonth data={$date} />
@@ -80,7 +89,12 @@
 	<!-- Change Month -->
 
 	<!-- Main div for transactions -->
-	<div class="flex flex-col justify-center space-y-8 pr-20 pl-20 pt-8">
+	<div class=" flex flex-col justify-center space-y-8 pt-8">
+		<div class="flex justify-between">
+			<p>Income: {total_income}$</p>
+			<p>Expense: {total_expense}$</p>
+			<p>Total: {total}$</p>
+		</div>
 		<!-- Div for transactions in a day -->
 		{#each Object.entries(groupedByDay) as [day, entries]}
 			<div

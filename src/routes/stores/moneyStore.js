@@ -11,7 +11,7 @@ export const filteredMoney = derived([money, date], ([allMoney, selectedDate]) =
 });
 
 export const loadMoney = async () => {
-	const { data, error } = await supabase.from('money').select();
+	const { data, error } = await supabase.from('money').select().order('day_id', true);
 
 	if (error) {
 		return console.error(error);
