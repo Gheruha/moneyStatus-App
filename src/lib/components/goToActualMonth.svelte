@@ -28,7 +28,7 @@
 		on:click={() => goToActualMonth(today)}
 		class="p-2 border rounded-full text-2xl w-16 h-16 text-center text-white transition-all hover:scale-110 duration-300 {showActualMonth ==
 		false
-			? 'cursor-not-allowed bg-slate-100 border-slate-200 hover:bg-slate-200 text-black dark:bg-zinc-600 dark:border-zinc-700 dark:text-white'
+			? 'button-not-allowed'
 			: 'bg-violet-500 border-violet-500 hover:bg-violet-400'}
 				"
 		disabled={!showActualMonth}

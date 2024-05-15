@@ -44,8 +44,7 @@
 <!-- Transaction options -->
 {#if money_data}
 	<div
-		class="flex fixed w-full h-full justify-center items-center"
-		style="background-color: rgba(0,0,0,0.5);"
+		class="transparent-div"
 		transition:fade
 	>
 		<div
