@@ -1,9 +1,13 @@
 <script>
-	import { goToActualMonth } from '$lib/components/globalFunctions.js';
 	import { onMount } from 'svelte';
+	import { date } from '../../routes/stores/dateStore';
 	export let showActualMonth;
 
 	let today = '';
+
+	const goToActualMonth = (today) => {
+		date.set(today);
+	};
 
 	onMount(() => {
 		updateDate();

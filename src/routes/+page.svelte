@@ -4,7 +4,6 @@
 	import { date } from '../routes/stores/dateStore.js';
 	import ChangeMonth from '$lib/components/changeMonth.svelte';
 	import { fade } from 'svelte/transition';
-	import { slide } from 'svelte/transition';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
 
@@ -81,28 +80,56 @@
 {/if}
 
 <!-- Main Div -->
-<div class="transactions-div w-4/5 h-full ml-auto flex flex-col pb-36 pt-28 space-y-8">
+<div class="transactions-div w-4/5 h-full ml-auto flex flex-col pb-36 pt-20 space-y-8">
 	<!-- Change Month -->
 	<div>
 		<ChangeMonth data={$date} />
 	</div>
 	<!-- Change Month -->
 
-	<!-- Main div for transactions -->
-	<div class=" flex flex-col justify-center space-y-8 pt-8">
-		<div class="flex justify-between">
-			<p>Income: {total_income}$</p>
-			<p>Expense: {total_expense}$</p>
-			<p>Total: {total}$</p>
+	<!-- Totals -->
+	<div class="flex justify-between border-b dark:border-zinc-600">
+		<div class="text-left">
+			<h2>Balance:</h2>
+			<p class="text-3xl font-semibold">
+				{total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $
+			</p>
 		</div>
+
+		<div class="text-right pt-2">
+			<p class="text-blue-500">
+				+ {total_income.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $
+			</p>
+			<p class="text-red-500">
+				- {total_expense.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $
+			</p>
+		</div>
+	</div>
+	<!-- Totals -->
+
+	<!-- Main div for transactions -->
+	<div class="flex flex-col justify-center space-y-8 pt-8">
 		<!-- Div for transactions in a day -->
 		{#each Object.entries(groupedByDay) as [day, entries]}
 			<div
-				class="space-y-4 rounded-lg border pb-16 pr-8 pl-8 bg-slate-50 shadow-lg dark:bg-zinc-800 dark:border-zinc-600"
+				class="space-y-4 rounded-lg border pb-16 pr-8 pl-8 bg-slate-50 shadow-md dark:bg-zinc-800 dark:border-zinc-600"
 				in:fly={{ y: 50 }}
-				out:slide
+				out:fly={{ y: 100 }}
 			>
-				<h2 class="text-2xl pt-4 font-semibold">{day}</h2>
+				<!-- Displaying the days -->
+				<div class="flex pt-4">
+					<h2 class="text-3xl font-semibold">
+						{day.slice(8, 10)}
+					</h2>
+					<div class="pl-2">
+						<p
+							class="border rounded-lg bg-zinc-200 shadow-sm dark:bg-zinc-600 dark:border-zinc-600 text-sm"
+						>
+							{day.slice(5, 7)}/{day.slice(0, 4)}
+						</p>
+					</div>
+				</div>
+				<!-- Displaying the days -->
 				<!-- Transactions -->
 				{#each entries as entry}
 					{#if entry.income != null}
@@ -114,7 +141,9 @@
 								{entry.category}
 							</p>
 							<div class="flex space-x-2">
-								<p class="text-blue-500">$ {entry.income}</p>
+								<p class="text-blue-500">
+									$ {entry.income.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+								</p>
 							</div>
 						</button>
 					{/if}
@@ -125,7 +154,9 @@
 						>
 							<p class="text-red-500 font-semibold">{entry.category}</p>
 							<div class="flex space-x-2">
-								<p class="text-red-500">$ {entry.expense}</p>
+								<p class="text-red-500">
+									$ {entry.expense.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+								</p>
 							</div></button
 						>
 					{/if}
@@ -134,6 +165,14 @@
 			</div>
 			<!-- Div for transactions in a day -->
 		{/each}
+		{#if Object.keys(groupedByDay).length === 0}
+			<div class="pt-40">
+				<span class="material-symbols-outlined" style="font-size: 60px; color: #a1a1aa">
+					database
+				</span>
+				<p class="text-2xl text-zinc-400">There is no data in this month</p>
+			</div>
+		{/if}
 	</div>
 	<!-- Main div for transactions -->
 </div>
