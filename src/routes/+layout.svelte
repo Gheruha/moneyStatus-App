@@ -39,8 +39,9 @@
 	let displayExpenseCategories = false;
 	let showActualMonth = true;
 	let showAccountOptions = false;
-	let income = 0;
-	let expense, category;
+	let income = 1;
+	let expense = 1;
+	let category;
 	let today = '';
 	let navLinks = [
 		{ path: '/', label: 'Daily', icon: 'early_on' },
@@ -57,19 +58,42 @@
 
 	const handleIncome = (income, today, category, user) => {
 		addIncome(income, today, category, user);
-		income = 0;
 		addInfoDiv();
 	};
 
-	function addInfoDiv() {
+	const handleExpense = (expense, today, category, user) => {
+		addExpense(expense, today, category, user);
+		addInfoExpenseDiv();
+	};
+
+	const addInfoDiv = () => {
 		addInfo = !addInfo;
 		showActualMonth = !showActualMonth;
-	}
+		income = 1;
+		category = null;
+	};
 
-	function addInfoExpense() {
+	const addInfoExpenseDiv = () => {
 		addInfoExp = !addInfoExp;
 		showActualMonth = !showActualMonth;
-	}
+		expense = 1;
+		category = null;
+	};
+
+	const addInfoExpense = () => {
+		addInfoExp = !addInfoExp;
+		showActualMonth = !showActualMonth;
+	};
+
+	const handleSelectedCategoryIn = (selected_category) => {
+		displayIncomeCategories = !displayIncomeCategories;
+		category = selected_category;
+	};
+
+	const handleSelectedCategoryEx = (selected_category) => {
+		displayExpenseCategories = !displayExpenseCategories;
+		category = selected_category;
+	};
 
 	onMount(() => {
 		updateDate();
@@ -79,10 +103,10 @@
 		return () => clearInterval(intervalId);
 	});
 
-	function updateDate() {
+	const updateDate = () => {
 		const date = new Date();
 		today = formatDay(date);
-	}
+	};
 </script>
 
 <link
@@ -175,12 +199,18 @@
 								type="text"
 								class="input-ui"
 								on:click={() => (displayIncomeCategories = !displayIncomeCategories)}
-								>Select category
+								>{category ?? 'SELECT INCOME CATEGORY'}
 							</button>
 						</label><br />
 						<label for="" class="label-money-data">
 							Value $: <br />
-							<input type="number" class="input-ui" bind:value={income} />
+							<input
+								type="number"
+								min="1"
+								oninput="validity.valid||(value='');"
+								class="input-ui"
+								bind:value={income}
+							/>
 						</label><br />
 						<label for="" class="label-money-data">
 							Date: <br />
@@ -189,12 +219,14 @@
 					</form>
 					<div class="items-center flex justify-center space-x-4">
 						<button on:click={() => addInfoDiv()} class="close-blue-button"> CLOSE </button>
-						<button
-							on:click={handleIncome(income, today, category, $user.id)}
-							class="w-20 h-10 border rounded-lg border-blue-500 bg-blue-500 text-white hover:bg-blue-400 transition-all hover:scale-110 duration-300"
-						>
-							ADD
-						</button>
+						{#if category && income > 0}
+							<button
+								on:click={handleIncome(income, today, category, $user.id)}
+								class="w-20 h-10 border rounded-lg border-blue-500 bg-blue-500 text-white hover:bg-blue-400 transition-all hover:scale-110 duration-300"
+							>
+								ADD
+							</button>
+						{/if}
 					</div>
 				</div>
 			</div>
@@ -205,7 +237,7 @@
 		{#if displayIncomeCategories}
 			<div class="transparent-div" transition:fade>
 				<div
-					class="flex flex-col justify-center align-middle w-1/4 border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800"
+					class="categories-div"
 					in:fly={{
 						y: 100,
 						easing: backOut
@@ -215,6 +247,20 @@
 					}}
 				>
 					<h2 class="text-2xl font-semibold pb-6">INCOME CATEGORIES</h2>
+
+					<!-- Categories Div -->
+					<div class="flex flex-col space-y-2 p-4">
+						{#each $income_categories as income_categories}
+							<button
+								on:click={() => handleSelectedCategoryIn(income_categories.name)}
+								class="p-2 flex border space-x-2 rounded-lg bg-slate-100 shadow-sm hover:bg-slate-200 dark:bg-zinc-700 dark:border-zinc-600 dark:hover:bg-zinc-500 transition-colors duration-300"
+							>
+								<span class="material-symbols-outlined">{income_categories.icon}</span>
+								<p>{income_categories.name}</p>
+							</button>
+						{/each}
+					</div>
+					<!-- Categories Div -->
 
 					<div>
 						<button
@@ -245,12 +291,23 @@
 					</div>
 					<form action="" class="flex flex-col">
 						<label for="" class="label-money-data">
-							Expense $: <br />
-							<input type="number" class="input-ui" bind:value={expense} />
+							Category: <br />
+							<button
+								type="text"
+								class="input-ui"
+								on:click={() => (displayExpenseCategories = !displayExpenseCategories)}
+								>{category ?? 'SELECT EXPENSE CATEGORY'}
+							</button>
 						</label><br />
 						<label for="" class="label-money-data">
-							Category: <br />
-							<input type="text" class="input-ui" bind:value={category} />
+							Value $: <br />
+							<input
+								type="number"
+								min="1"
+								oninput="validity.valid||(value='');"
+								class="input-ui"
+								bind:value={expense}
+							/>
 						</label><br />
 						<label for="" class="label-money-data">
 							Date: <br />
@@ -259,17 +316,59 @@
 					</form>
 					<div class="items-center flex justify-center space-x-4">
 						<button on:click={() => addInfoExpense()} class="close-red-button"> CLOSE </button>
-						<button
-							on:click={() => addExpense(expense, formatDay(today), category, $user.id)}
-							class="w-20 h-10 border rounded-lg border-red-500 bg-red-500 text-white hover:bg-red-400 transition-all hover:scale-110 duration-300"
-						>
-							ADD
-						</button>
+						{#if category && expense > 0}
+							<button
+								on:click={() => handleExpense(expense, formatDay(today), category, $user.id)}
+								class="red-button"
+							>
+								ADD
+							</button>
+						{/if}
 					</div>
 				</div>
 			</div>
 		{/if}
 		<!-- Expense form -->
+
+		<!-- Displaying Expense Categories-->
+		{#if displayExpenseCategories}
+			<div class="transparent-div" transition:fade>
+				<div
+					class="categories-div"
+					in:fly={{
+						y: 100,
+						easing: backOut
+					}}
+					out:fly={{
+						y: 300
+					}}
+				>
+					<h2 class="text-2xl font-semibold">EXPENSE CATEGORIES</h2>
+
+					<!-- Categories Div -->
+					<div class="flex flex-col space-y-2 p-4">
+						{#each $expense_categories as expense_categories}
+							<button
+								on:click={() => handleSelectedCategoryEx(expense_categories.name)}
+								class="p-2 flex border space-x-2 rounded-lg bg-slate-100 shadow-sm hover:bg-slate-200 dark:bg-zinc-700 dark:border-zinc-600 dark:hover:bg-zinc-500 transition-colors duration-300"
+							>
+								<span class="material-symbols-outlined">{expense_categories.icon}</span>
+								<p>{expense_categories.name}</p>
+							</button>
+						{/each}
+					</div>
+					<!-- Categories Div -->
+
+					<div>
+						<button
+							class="close-red-button"
+							on:click={() => (displayExpenseCategories = !displayExpenseCategories)}>CLOSE</button
+						>
+					</div>
+				</div>
+			</div>
+		{/if}
+		<!-- Displaying Expense Categories-->
 		<!-- Info forms-->
 
 		<!-- Content -->

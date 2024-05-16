@@ -63,12 +63,12 @@
 			<div class="items-center flex justify-center space-x-4">
 				<button
 					on:click={() => editTransaction()}
-					class="w-1/5 border rounded-lg border-red-500 text-red-600 hover:text-red-600 hover:bg-red-300 transition-all hover:scale-110 duration-300"
+					class="close-red-button"
 				>
 					CLOSE
 				</button>
 				<button
-					class="w-1/5 border rounded-lg border-red-500 bg-red-500 text-white hover:bg-red-400 transition-all hover:scale-110 duration-300"
+					class="red-button"
 					on:click={() => deleteTransaction(money_id)}
 				>
 					DELETE

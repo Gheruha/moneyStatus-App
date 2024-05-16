@@ -52,9 +52,19 @@ body {
 }
 
 .add-money-data{
-	@apply flex flex-col justify-center align-middle w-2/4 h-2/4 border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800
+	width: 596px;
+	@apply flex flex-col justify-center align-middle pt-2 pb-2 border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800
 }
 
 .label-money-data{
 	@apply  text-slate-500 dark:text-zinc-300
+}
+
+.categories-div{
+	height: 396px;
+	@apply justify-center align-middle w-96 overflow-auto border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800 pt-2 pb-2
+}
+
+.red-button{
+	@apply w-20 h-10 border rounded-lg border-red-500 bg-red-500 text-white hover:bg-red-400 transition-all hover:scale-110 duration-300
 }
