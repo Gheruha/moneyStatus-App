@@ -68,3 +68,11 @@ body {
 .red-button{
 	@apply w-20 h-10 border rounded-lg border-red-500 bg-red-500 text-white hover:bg-red-400 transition-all hover:scale-110 duration-300
 }
+
+.show-categories{
+	@apply flex justify-between w-full border rounded-lg bg-slate-100 shadow-sm hover:bg-slate-200 dark:bg-zinc-700 dark:border-zinc-600 dark:hover:bg-zinc-500 transition-colors duration-300
+}
+
+.category-content{
+	@apply flex space-x-2 p-2
+}

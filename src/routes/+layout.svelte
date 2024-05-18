@@ -47,6 +47,7 @@
 		{ path: '/', label: 'Daily', icon: 'early_on' },
 		{ path: '/calendar', label: 'Calendar', icon: 'calendar_month' },
 		{ path: '/analytics', label: 'Analytics', icon: 'analytics' },
+		{ path: '/categories', label: 'Categories', icon: 'category' },
 		{ path: '/testing', label: 'Testing', icon: 'handyman' }
 	];
 
@@ -78,11 +79,6 @@
 		showActualMonth = !showActualMonth;
 		expense = 1;
 		category = null;
-	};
-
-	const addInfoExpense = () => {
-		addInfoExp = !addInfoExp;
-		showActualMonth = !showActualMonth;
 	};
 
 	const handleSelectedCategoryIn = (selected_category) => {
@@ -204,13 +200,7 @@
 						</label><br />
 						<label for="" class="label-money-data">
 							Value $: <br />
-							<input
-								type="number"
-								min="1"
-								oninput="validity.valid||(value='');"
-								class="input-ui"
-								bind:value={income}
-							/>
+							<input type="number" min="1" class="input-ui" bind:value={income} />
 						</label><br />
 						<label for="" class="label-money-data">
 							Date: <br />
@@ -301,13 +291,7 @@
 						</label><br />
 						<label for="" class="label-money-data">
 							Value $: <br />
-							<input
-								type="number"
-								min="1"
-								oninput="validity.valid||(value='');"
-								class="input-ui"
-								bind:value={expense}
-							/>
+							<input type="number" min="1" class="input-ui" bind:value={expense} />
 						</label><br />
 						<label for="" class="label-money-data">
 							Date: <br />
@@ -315,7 +299,7 @@
 						</label><br />
 					</form>
 					<div class="items-center flex justify-center space-x-4">
-						<button on:click={() => addInfoExpense()} class="close-red-button"> CLOSE </button>
+						<button on:click={() => addInfoExpenseDiv()} class="close-red-button"> CLOSE </button>
 						{#if category && expense > 0}
 							<button
 								on:click={() => handleExpense(expense, formatDay(today), category, $user.id)}
@@ -382,7 +366,7 @@
 		<!-- Add income & expense buttons -->
 		<div class="fixed bottom-12 right-10">
 			<button
-				on:click={() => addInfoExpense()}
+				on:click={() => addInfoExpenseDiv()}
 				class="p-2 border rounded-full text-2xl w-16 h-16 text-center bg-red-500 border-red-500 text-white transition-all hover:scale-110 hover:bg-red-400 duration-300 {addInfo ==
 				true
 					? 'button-not-allowed'
