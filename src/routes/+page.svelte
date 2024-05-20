@@ -43,10 +43,7 @@
 
 <!-- Transaction options -->
 {#if money_data}
-	<div
-		class="transparent-div"
-		transition:fade
-	>
+	<div class="transparent-div" transition:fade>
 		<div
 			class="flex flex-col justify-center align-middle w-1/4 h-1/4 border rounded-lg shadow-lg dark:border-zinc-600 bg-slate-100 dark:bg-zinc-800"
 			in:fly={{
@@ -61,18 +58,8 @@
 				<h2 class="text-2xl font-semibold pb-6">EDIT TRANSACTION</h2>
 			</div>
 			<div class="items-center flex justify-center space-x-4">
-				<button
-					on:click={() => editTransaction()}
-					class="close-red-button"
-				>
-					CLOSE
-				</button>
-				<button
-					class="red-button"
-					on:click={() => deleteTransaction(money_id)}
-				>
-					DELETE
-				</button>
+				<button on:click={() => editTransaction()} class="close-red-button"> CLOSE </button>
+				<button class="red-button" on:click={() => deleteTransaction(money_id)}> DELETE </button>
 			</div>
 		</div>
 	</div>
