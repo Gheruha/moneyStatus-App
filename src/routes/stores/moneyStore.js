@@ -3,21 +3,52 @@ import { supabase } from '$lib/database/supabaseClient.js';
 import { date } from './dateStore';
 import { derived } from 'svelte/store';
 
-export const money = writable([]);
-export const filteredMoney = derived([money, date], ([allMoney, selectedDate]) => {
-	const yearMonth = formatDateStore(selectedDate);
-
-	return allMoney.filter((entry) => getYearAndMonth(entry.day_id) === yearMonth);
-});
+export const money = writable(new Map());
+export let month_input = null;
+export let year_input = null;
+let stored_keys = [];
+let key;
 
 export const loadMoney = async () => {
-	const { data, error } = await supabase.from('money').select().order('day_id', true);
+	let { data, error } = await supabase.rpc('getmoney', {
+		month_input,
+		year_input
+	});
+
+	if (data.length > 0) {
+		money.update((currentMap) => {
+			currentMap.set(key, data);
+			return currentMap;
+		});
+		if (!stored_keys.includes(key)) {
+			stored_keys.push(key);
+		}
+	}
+
+	if (stored_keys.length > 6) {
+		for (let i = 0; i < stored_keys.length - 1; i++) {
+			money.update((currentMap) => {
+				currentMap.delete(stored_keys[i]);
+				return currentMap;
+			});
+		}
+		stored_keys = stored_keys.slice(-1);
+	}
 
 	if (error) {
 		return console.error(error);
 	}
-	money.set(data);
 };
+
+// Verifying if there is already this data
+date.subscribe((newDate) => {
+	month_input = newDate.getMonth() + 1;
+	year_input = newDate.getFullYear();
+	key = `${month_input}${year_input}`;
+	if (!stored_keys.includes(key)) {
+		loadMoney();
+	}
+});
 
 export const addIncome = async (income, day_id, category, user_id) => {
 	const { error } = await supabase
@@ -50,16 +81,4 @@ export const deleteData = async (money_id) => {
 	if (error) {
 		return console.error(error);
 	}
-};
-
-const getYearAndMonth = (date_string) => {
-	return date_string.slice(0, 7);
-};
-
-const formatDateStore = (date_string) => {
-	const dateObj = new Date(date_string);
-	const year = dateObj.getFullYear();
-	const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-
-	return `${year}-${month}`;
 };

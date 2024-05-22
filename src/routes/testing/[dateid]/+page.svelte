@@ -1,12 +1,25 @@
 <script>
-	import { deleteData } from '../routes/stores/moneyStore';
-	import { money } from '../routes/stores/moneyStore';
-	import { date } from '../routes/stores/dateStore.js';
-	import ChangeMonth from '$lib/components/changeMonth.svelte';
+	import { deleteData } from '../../stores/moneyStore';
+	import { filteredMoney } from '../../stores/moneyStore';
+	import { date } from '../../stores/dateStore';
+	import { increaseMonth } from '../../stores/dateStore';
+	import { decreaseMonth } from '../../stores/dateStore';
 	import { fade } from 'svelte/transition';
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
+	import { page } from '$app/stores';
 
+	export let data;
+
+	page.params.dateid = '3313';
+
+	// console.log(
+	// 	$date.toLocaleString('default', {
+	// 		month: 'long'
+	// 	})
+	// );
+
+	// console.log($page.params.date);
 	let groupedByDay = {};
 	let total_income, total_expense, total;
 
@@ -15,7 +28,7 @@
 		total_expense = 0;
 		total = 0;
 		groupedByDay = {}; // Reset on each update
-		$money.forEach((entry) => {
+		$filteredMoney.forEach((entry) => {
 			const day = entry.day_id;
 			const income = entry.income;
 			const expense = entry.expense;
@@ -25,6 +38,12 @@
 			groupedByDay[day].push(entry);
 		});
 		total = total_income - total_expense;
+
+		// page.params =
+		// 	'/testing' +
+		// 	$date.toLocaleString('default', {
+		// 		month: 'long'
+		// 	});
 	}
 
 	let money_data = false;
@@ -69,10 +88,28 @@
 <div class="transactions-div w-4/5 h-full ml-auto flex flex-col pb-36 pt-20 space-y-8">
 	<!-- Change Month -->
 	<div>
-		<ChangeMonth data={$date} />
+		<div class="flex justify-between p-4 dark:border-zinc-600">
+			<button
+				class="rounded-full transition-all hover:scale-125 duration-300"
+				on:click={() => decreaseMonth($date)}
+				><span class="material-symbols-outlined"> arrow_back_ios </span></button
+			>
+			<h1 class="text-2xl">
+				{$date.toLocaleString('default', {
+					month: 'long',
+					year: 'numeric'
+				})}
+			</h1>
+			<button
+				class="rounded-full transition-all hover:scale-125 duration-300"
+				on:click={() => increaseMonth($date)}
+			>
+				<span class="material-symbols-outlined"> arrow_forward_ios </span>
+			</button>
+		</div>
 	</div>
 	<!-- Change Month -->
-
+	<p>{data.data}</p>
 	<!-- Totals -->
 	<div class="flex justify-between border-b dark:border-zinc-600">
 		<div class="text-left">
@@ -149,12 +186,6 @@
 				{/each}
 			</div>
 			<!-- Div for transactions in a day -->
-		{/each}
-
-		{#each $money as entries}
-			{#each entries as entry}
-				<p>{entry}</p>
-			{/each}
 		{/each}
 		{#if Object.keys(groupedByDay).length === 0}
 			<div class="pt-40">

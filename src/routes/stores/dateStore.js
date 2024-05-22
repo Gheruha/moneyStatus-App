@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { page } from '$app/stores';
 
 export let date = writable(new Date());
 
