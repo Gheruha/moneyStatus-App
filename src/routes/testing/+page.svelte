@@ -8,22 +8,30 @@
 	import { backOut } from 'svelte/easing';
 
 	let groupedByDay = {};
+	let month, year, actual_key;
 	let total_income, total_expense, total;
 
 	$: {
 		total_income = 0;
 		total_expense = 0;
 		total = 0;
-		groupedByDay = {}; // Reset on each update
-		$money.forEach((entry) => {
-			const day = entry.day_id;
-			const income = entry.income;
-			const expense = entry.expense;
-			total_income += income;
-			total_expense += expense;
-			groupedByDay[day] = groupedByDay[day] || [];
-			groupedByDay[day].push(entry);
-		});
+
+		month = $date.getMonth() + 1;
+		year = $date.getFullYear();
+		actual_key = `${month}${year}`;
+		groupedByDay = {};
+		for (const [key, entries] of $money) {
+			if (key == actual_key) {
+				for (const entry of entries) {
+					const day = entry.day_id;
+					groupedByDay[day] = groupedByDay[day] || [];
+					groupedByDay[day].push(entry);
+
+					total_income += entry.income;
+					total_expense += entry.expense;
+				}
+			}
+		}
 		total = total_income - total_expense;
 	}
 
@@ -151,11 +159,6 @@
 			<!-- Div for transactions in a day -->
 		{/each}
 
-		{#each $money as entries}
-			{#each entries as entry}
-				<p>{entry}</p>
-			{/each}
-		{/each}
 		{#if Object.keys(groupedByDay).length === 0}
 			<div class="pt-40">
 				<span class="material-symbols-outlined" style="font-size: 60px; color: #a1a1aa">

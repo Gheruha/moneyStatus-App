@@ -1,7 +1,6 @@
 import { writable } from 'svelte/store';
 import { supabase } from '$lib/database/supabaseClient.js';
 import { date } from './dateStore';
-import { derived } from 'svelte/store';
 
 export const money = writable(new Map());
 export let month_input = null;
