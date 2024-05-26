@@ -50,34 +50,56 @@ date.subscribe((newDate) => {
 });
 
 export const addIncome = async (income, day_id, category, user_id) => {
+	const money_id = crypto.randomUUID();
 	const { error } = await supabase
 		.from('money')
-		.insert([{ money_id: crypto.randomUUID(), income, day_id, category, user_id }]);
+		.insert([{ money_id, income, day_id, category, user_id }]);
 
 	if (error) {
+		window.alert(error);
 		return console.error(error);
+	} else {
+		money.update((currentMap) => {
+			const currentEntries = currentMap.get(key) || [];
+			currentEntries.push({ money_id, income, day_id, category, user_id });
+			return currentMap.set(key, currentEntries);
+		});
 	}
-	loadMoney();
 };
 
 export const addExpense = async (expense, day_id, category, user_id) => {
+	const money_id = crypto.randomUUID();
 	const { error } = await supabase
 		.from('money')
-		.insert([{ money_id: crypto.randomUUID(), expense, day_id, category, user_id }]);
+		.insert([{ money_id, expense, day_id, category, user_id }]);
 
 	if (error) {
+		window.alert(error);
 		return console.error(error);
+	} else {
+		money.update((currentMap) => {
+			const currentEntries = currentMap.get(key) || [];
+			currentEntries.push({ money_id, expense, day_id, category, user_id });
+			return currentMap.set(key, currentEntries);
+		});
 	}
-
-	loadMoney();
 };
 
 export const deleteData = async (money_id) => {
 	const { error } = await supabase.from('money').delete().match({ money_id });
 
-	money.update((money) => money.filter((mon) => mon.money_id != money_id));
-
 	if (error) {
+		window.alert(error);
 		return console.error(error);
+	} else {
+		money.update((currentMap) => {
+			for (const [k, v] of currentMap.entries()) {
+				currentMap.set(
+					k,
+					v.filter((entry) => entry.money_id !== money_id)
+				);
+			}
+			return currentMap;
+		});
 	}
 };

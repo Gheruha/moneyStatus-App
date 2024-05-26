@@ -27,8 +27,8 @@
 					groupedByDay[day] = groupedByDay[day] || [];
 					groupedByDay[day].push(entry);
 
-					total_income += entry.income;
-					total_expense += entry.expense;
+					total_income += entry.income || 0;
+					total_expense += entry.expense || 0;
 				}
 			}
 		}
@@ -46,6 +46,7 @@
 	const deleteTransaction = (id) => {
 		money_data = !money_data;
 		deleteData(id);
+		console.log($money);
 	};
 </script>
 
